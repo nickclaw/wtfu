@@ -6,6 +6,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class AlarmListActivity extends ActionBarActivity {
 
@@ -14,7 +17,6 @@ public class AlarmListActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_list);
 
-        ListView alarmView = (ListView) findViewById(R.id.alarmView);
 
     }
 
@@ -27,6 +29,15 @@ public class AlarmListActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
+
+        final List<Alarm> alarmList = new ArrayList<Alarm>() {{
+            add(new Alarm());
+            add(new Alarm());
+            add(new Alarm());
+        }};
+        ListView alarmView = (ListView) findViewById(R.id.alarmView);
+        AlarmAdapter alarmAdapter = new AlarmAdapter(this, alarmList);
+        alarmView.setAdapter(alarmAdapter);
     }
 
     @Override
