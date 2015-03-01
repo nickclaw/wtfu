@@ -16,7 +16,7 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by austindg on 2/27/15.
+ * Created by wtfu group
  */
 public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
