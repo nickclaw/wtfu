@@ -3,10 +3,81 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Button
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="New Button"
-        android:id="@+id/button"
-        android:layout_gravity="center_horizontal" />
+        android:weightSum="1"
+        android:layout_marginTop="10dp">
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="M"
+            android:id="@+id/checkBox"
+            android:checked="false"
+            android:textSize="12dp"
+            android:layout_weight="0.143" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="T"
+            android:id="@+id/checkBox2"
+            android:checked="false"
+            android:textSize="12dp"
+            android:layout_weight="0.143" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="W"
+            android:id="@+id/checkBox3"
+            android:checked="false"
+            android:textSize="12dp"
+            android:layout_weight="0.143" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Th"
+            android:id="@+id/checkBox4"
+            android:checked="false"
+            android:textSize="12dp"
+            android:layout_weight="0.143" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="F"
+            android:id="@+id/checkBox5"
+            android:checked="false"
+            android:textSize="12dp"
+            android:layout_weight="0.143" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="S"
+            android:id="@+id/checkBox6"
+            android:checked="false"
+            android:textSize="12dp"
+            android:layout_weight="0.143" />
+
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Su"
+            android:id="@+id/checkBox7"
+            android:checked="false"
+            android:textSize="12dp"
+            android:layout_weight="0.143" />
+    </LinearLayout>
+
+    <TimePicker
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/timePicker"
+        android:timePickerMode="spinner" />
+
 </LinearLayout>

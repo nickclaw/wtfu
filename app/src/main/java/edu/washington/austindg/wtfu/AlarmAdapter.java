@@ -35,9 +35,9 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View rowView = inflater.inflate(R.layout.alarm_item_view, parent, false);
+        View rowView = inflater.inflate(R.layout.alarm_item_view, parent, false);
 
-        final ViewGroup rowGroup = (ViewGroup) rowView;
+        ViewGroup rowGroup = (ViewGroup) rowView;
         final LinearLayout viewContainer = (LinearLayout) rowGroup.findViewById(R.id.container);
 
         LayoutInflater vi = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -51,7 +51,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         TextView amPm = (TextView) rowView.findViewById(R.id.am_pm);
         amPm.setText(alarm.getAmPm());
 
-        TextView daysOfWeek = (TextView) rowView.findViewById(R.id.days_of_week);
+        final TextView daysOfWeek = (TextView) rowView.findViewById(R.id.days_of_week);
         daysOfWeek.setText(createDayOfWeekString(alarm.getDays()));
 
         Switch enabledSwitch = (Switch) rowView.findViewById(R.id.enabled_switch);
@@ -69,27 +69,21 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
             @Override
             public void onClick(View v) {
                 Alarm clickedAlarm = alarmList.get(position);
+
                 ImageButton btnClicked = (ImageButton) v;
                 boolean expanded = (boolean) btnClicked.getTag(R.string.edit_view_expanded_key);
-
                 if(!expanded) {
-                    editAlarmView.animate().y(10);
+                    editAlarmView.setVisibility(View.VISIBLE);
+                    editAlarmView.animate().y(20).setDuration(200).start();
                     viewContainer.addView(editAlarmView, 0);
-
-//                    EditAlarmFragment editAlarmFragment = new EditAlarmFragment();
-//                    editAlarmFragment.setAlarm(clickedAlarm);
-//                    activity.getFragmentManager().beginTransaction()
-//                            .add(viewContainer.getId(), editAlarmFragment)
-//                            .addToBackStack(null)
-//                            .commit();
-
+                    daysOfWeek.setVisibility(View.INVISIBLE);
                     btnClicked.setImageResource(R.drawable.ic_action_close);
                     btnClicked.setTag(R.string.edit_view_expanded_key, true);
                 } else { // must be close btn click
-                    editAlarmView.setTranslationY(-10);
+                    editAlarmView.animate().y(-20).setDuration(200).start();
                     viewContainer.removeView(editAlarmView);
-
-//                    activity.getFragmentManager().popBackStack();
+                    editAlarmView.setVisibility(View.INVISIBLE);
+                    daysOfWeek.setVisibility(View.VISIBLE);
                     btnClicked.setTag(R.string.edit_view_expanded_key, false);
                     btnClicked.setImageResource(R.drawable.ic_action_expand);
                 }
@@ -109,7 +103,11 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
                 }
             }
         }
-        return dayOfWeekString.substring(0, dayOfWeekString.length() - 2);
+        if(!dayOfWeekString.isEmpty()) {
+            return dayOfWeekString.substring(0, dayOfWeekString.length() - 2);
+        } else {
+            return "No Repeat";
+        }
     }
 
 }

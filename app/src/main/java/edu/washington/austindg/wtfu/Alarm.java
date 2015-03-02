@@ -16,7 +16,7 @@ public class Alarm implements Serializable {
     private boolean enabled;
 
     public Alarm() {
-        this(69, PM, new boolean[7], false);
+        this(420, PM, new boolean[7], false);
     }
 
     public Alarm(int startTime, String amPm, boolean[] days, boolean enabled) {
