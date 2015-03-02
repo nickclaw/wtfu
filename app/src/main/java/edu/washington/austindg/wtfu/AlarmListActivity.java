@@ -2,15 +2,19 @@ package edu.washington.austindg.wtfu;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class AlarmListActivity extends ActionBarActivity {
+
+    public static final String TAG = "AlarmListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,23 +23,38 @@ public class AlarmListActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-
-    @Override
     public void onResume() {
         super.onResume();
 
-        final List<Alarm> alarmList = new ArrayList<Alarm>() {{
-            add(new Alarm());
-            add(new Alarm());
-            add(new Alarm());
+        final List<Alarm> alarms = new ArrayList<Alarm>() {{
+            add(new Alarm(330, Alarm.AM, new boolean[] {true, false, false, true, true, false, true}, true));
+            add(new Alarm(340, Alarm.PM, new boolean[] {true, true, true, true, true, true, true}, true));
+            add(new Alarm(350, Alarm.PM, new boolean[] {true, true, false, true, true, false, true}, false));
         }};
-        ListView alarmView = (ListView) findViewById(R.id.alarmView);
-        AlarmAdapter alarmAdapter = new AlarmAdapter(this, alarmList);
-        alarmView.setAdapter(alarmAdapter);
+
+        final AlarmAdapter alarmAdapter = new AlarmAdapter(this, alarms);
+
+        ListView alarmList = (ListView) findViewById(R.id.alarmList);
+        alarmList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.i(TAG, "Alarm Item Clicked");
+                Alarm clickedAlarm = alarmAdapter.getItem(position);
+                EditAlarmFragment editAlarmFragment = new EditAlarmFragment();
+                editAlarmFragment.setAlarm(clickedAlarm);
+                getFragmentManager().beginTransaction()
+                        .add(R.id.container, editAlarmFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        });
+
+        alarmList.setAdapter(alarmAdapter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override

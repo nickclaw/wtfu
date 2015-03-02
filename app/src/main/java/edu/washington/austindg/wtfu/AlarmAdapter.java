@@ -1,15 +1,14 @@
 package edu.washington.austindg.wtfu;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -21,30 +20,42 @@ import java.util.List;
 public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
     private static final String TAG = "AlarmAdapter";
-    private final Activity context;
+    private final Activity activity;
     private final List<Alarm> alarmList;
 
-    public AlarmAdapter(Context context, List<Alarm> alarmList) {
+    public AlarmAdapter(Activity activity, List<Alarm> alarmList) {
 
-        super(context, R.layout.alarm_item_view, alarmList);
+        super(activity, R.layout.alarm_item_view, alarmList);
 
-        this.context = (Activity) context;
+        this.activity = activity;
         this.alarmList = alarmList;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        LayoutInflater inflater = (LayoutInflater) context
+    public View getView(final int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View rowView = inflater.inflate(R.layout.alarm_item_view, parent, false);
 
-        View rowView = inflater.inflate(R.layout.alarm_item_view, parent, false);
+        final ViewGroup rowGroup = (ViewGroup) rowView;
+        final LinearLayout viewContainer = (LinearLayout) rowGroup.findViewById(R.id.container);
 
-        TextView time = (TextView) rowView.findViewById(R.id.time);
+        LayoutInflater vi = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final View editAlarmView = vi.inflate(R.layout.edit_alarm_layout, null);
 
         final Alarm alarm = alarmList.get(position);
 
+        TextView time = (TextView) rowView.findViewById(R.id.time);
+        time.setText(Integer.toString(alarmList.get(position).getStartTime()));
+
+        TextView amPm = (TextView) rowView.findViewById(R.id.am_pm);
+        amPm.setText(alarm.getAmPm());
+
+        TextView daysOfWeek = (TextView) rowView.findViewById(R.id.days_of_week);
+        daysOfWeek.setText(createDayOfWeekString(alarm.getDays()));
+
         Switch enabledSwitch = (Switch) rowView.findViewById(R.id.enabled_switch);
+        enabledSwitch.setChecked(alarm.getEnabled());
         enabledSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -52,38 +63,53 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
             }
         });
 
-        Button editBtn = (Button) rowView.findViewById(R.id.edit_btn);
-        editBtn.setOnClickListener(new View.OnClickListener() {
+        final ImageButton editAlarmBtn = (ImageButton) rowView.findViewById(R.id.edit_alarm_btn);
+        editAlarmBtn.setTag(R.string.edit_view_expanded_key, false);
+        editAlarmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Button clickedBtn = (Button) v;
-                EditAlarmFragment editAlarmFragment = new EditAlarmFragment();
-                editAlarmFragment.setAlarm(alarm);
-                context.getFragmentManager().beginTransaction()
-                        .add(R.id.container, editAlarmFragment)
-                        .addToBackStack(null)
-                        .commit();
+                Alarm clickedAlarm = alarmList.get(position);
+                ImageButton btnClicked = (ImageButton) v;
+                boolean expanded = (boolean) btnClicked.getTag(R.string.edit_view_expanded_key);
+
+                if(!expanded) {
+                    editAlarmView.animate().y(10);
+                    viewContainer.addView(editAlarmView, 0);
+
+//                    EditAlarmFragment editAlarmFragment = new EditAlarmFragment();
+//                    editAlarmFragment.setAlarm(clickedAlarm);
+//                    activity.getFragmentManager().beginTransaction()
+//                            .add(viewContainer.getId(), editAlarmFragment)
+//                            .addToBackStack(null)
+//                            .commit();
+
+                    btnClicked.setImageResource(R.drawable.ic_action_close);
+                    btnClicked.setTag(R.string.edit_view_expanded_key, true);
+                } else { // must be close btn click
+                    editAlarmView.setTranslationY(-10);
+                    viewContainer.removeView(editAlarmView);
+
+//                    activity.getFragmentManager().popBackStack();
+                    btnClicked.setTag(R.string.edit_view_expanded_key, false);
+                    btnClicked.setImageResource(R.drawable.ic_action_expand);
+                }
             }
         });
-
-        time.setText(Integer.toString(alarmList.get(position).getStartTime()));
-        enabledSwitch.setChecked(alarmList.get(position).getEnabled());
 
         return rowView;
     }
 
-    public static class EditAlarmFragment extends Fragment {
-
-        private Alarm alarm;
-
-        public View onCreateView(LayoutInflater inflater, final ViewGroup container, Bundle savedInstanceState) {
-            return inflater.inflate(R.layout.edit_alarm_layout, container, false);
+    public String createDayOfWeekString(boolean[] days) {
+        String dayOfWeekString = "";
+        String[] dayStrings = new String[] {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+        if(days.length == 7) {
+            for(int i = 0; i < days.length; i++) {
+                if(days[i]) {
+                    dayOfWeekString += dayStrings[i] + ", ";
+                }
+            }
         }
-
-        public void setAlarm(Alarm alarm) {
-            this.alarm = alarm;
-        }
-
+        return dayOfWeekString.substring(0, dayOfWeekString.length() - 2);
     }
 
 }
