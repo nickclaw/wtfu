@@ -8,6 +8,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -33,6 +35,7 @@ public class Alarm implements Serializable {
     }
 
     public void setStartTime(int time) {
+        handler.firePropertyChange("startTime", this.startTime, time);
         this.startTime = time;
     }
 
@@ -41,20 +44,38 @@ public class Alarm implements Serializable {
     }
 
     public void setDays(boolean[] days) {
+        handler.firePropertyChange("days", this.days, days);
         this.days = days;
     }
 
-    public boolean[] setDays() {
+    public boolean[] getDays() {
         return this.days;
     }
 
     public void setEnabled(boolean enabled) {
+        handler.firePropertyChange("enabled", this.enabled, enabled);
         this.enabled = enabled;
     }
 
     public boolean getEnabled() {
         return this.enabled;
     }
+
+    //
+    // Listenable implementation
+    //
+
+    private transient final PropertyChangeSupport handler = new PropertyChangeSupport(this);
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        handler.addPropertyChangeListener(listener);
+    }
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        handler.removePropertyChangeListener(listener);
+    }
+
+    //
+    // Serialization implementation
+    //
 
     /**
      * Serialize a list of alarms to a contexts SharedPreferences
@@ -82,13 +103,13 @@ public class Alarm implements Serializable {
      * @param context
      * @return
      */
-    public static List<Alarm> unserialize(Context context) {
+    public static List<Alarm> deserialize(Context context) {
         // get shared preferences
         // defaulting to empty json array
         SharedPreferences prefs = context.getSharedPreferences(ALARM_KEY, Context.MODE_PRIVATE);
         String data = prefs.getString(ALARM_KEY, "[]");
 
-        // unserialize json string into List<Alarm>
+        // deserialize json string into List<Alarm>
         Gson gson = new Gson();
         return gson.fromJson(data, new TypeToken<List<Alarm>>(){}.getType());
     }

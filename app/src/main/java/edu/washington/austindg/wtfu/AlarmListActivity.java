@@ -7,12 +7,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class AlarmListActivity extends ActionBarActivity {
+public class AlarmListActivity extends ActionBarActivity
+    implements PropertyChangeListener {
 
     public static final String TAG = "AlarmListActivity";
     public static final List<Alarm> alarmList = new ArrayList<Alarm>();
@@ -40,14 +43,21 @@ public class AlarmListActivity extends ActionBarActivity {
         super.onResume();
 
         // replace alarms
-        List<Alarm> list = Alarm.unserialize(this);
+        List<Alarm> list = Alarm.deserialize(this);
         alarmList.clear();
-        alarmList.addAll(list);
+        for(Alarm alarm : list) {
+            alarm.addPropertyChangeListener(this);
+            alarmList.add(alarm);
+        }
 
         // build list view
         ListView alarmView = (ListView) findViewById(R.id.alarmView);
         AlarmAdapter alarmAdapter = new AlarmAdapter(this, alarmList);
         alarmView.setAdapter(alarmAdapter);
+    }
+
+    public void propertyChange(PropertyChangeEvent event) {
+        Log.i(TAG, "Property '" + event.getPropertyName() + "' changed: " + event.getNewValue().toString());
     }
 
     @Override
