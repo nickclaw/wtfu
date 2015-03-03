@@ -9,7 +9,6 @@ import android.widget.ListView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class AlarmListActivity extends ActionBarActivity
     }
 
     public void propertyChange(PropertyChangeEvent event) {
-        Log.i(TAG, "Property '" + event.getPropertyName() + "' changed: " + event.getNewValue().toString());
+        Log.i(TAG, "Property '" + event.getPropertyName() + "' has changed: " + event.getNewValue().toString());
     }
 
     @Override
@@ -84,7 +83,7 @@ public class AlarmListActivity extends ActionBarActivity
             // data change, refresh the view please
             alarmAdapter.notifyDataSetChanged();
 
-            // randomly insult user
+            // randomly sayInsult user
             Insulter.getInstance().insult();
         }
 
