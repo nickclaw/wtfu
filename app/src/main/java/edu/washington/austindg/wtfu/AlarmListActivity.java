@@ -28,7 +28,7 @@ public class AlarmListActivity extends ActionBarActivity {
         alarms = new ArrayList<Alarm>() {{
             add(new Alarm(330, Alarm.AM, new boolean[] {true, false, false, true, true, false, true}, true));
             add(new Alarm(340, Alarm.PM, new boolean[] {true, true, true, true, true, true, true}, false));
-            add(new Alarm(310, Alarm.PM, new boolean[] {false, false, false, false, false, false, false}, true));
+            add(new Alarm(310, Alarm.PM, new boolean[] {false, false, true, false, false, false, false}, false));
         }};
 
         alarmAdapter = new AlarmAdapter(this, alarms);
