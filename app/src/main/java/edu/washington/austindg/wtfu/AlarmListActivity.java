@@ -36,7 +36,6 @@ public class AlarmListActivity extends ActionBarActivity
         }
     }
 
-
     @Override
     public void onResume() {
         super.onResume();

@@ -35,13 +35,12 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
         View rowView = inflater.inflate(R.layout.alarm_item_view, parent, false);
+        final LinearLayout editAlarmContainer = (LinearLayout) rowView.findViewById(R.id.container);
 
-        ViewGroup rowGroup = (ViewGroup) rowView;
-        final LinearLayout viewContainer = (LinearLayout) rowGroup.findViewById(R.id.container);
-
-        LayoutInflater vi = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        final View editAlarmView = vi.inflate(R.layout.edit_alarm_layout, null);
+        // editAlarmView will be added to editAlarmContainer in onClickListener for editAlarmBtn
+        final View editAlarmView = inflater.inflate(R.layout.edit_alarm_layout, null);
 
         final Alarm alarm = alarmList.get(position);
 
@@ -65,6 +64,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
         final ImageButton editAlarmBtn = (ImageButton) rowView.findViewById(R.id.edit_alarm_btn);
         editAlarmBtn.setTag(R.string.edit_view_expanded_key, false);
+
         editAlarmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,19 +73,29 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
                 ImageButton btnClicked = (ImageButton) v;
                 boolean expanded = (boolean) btnClicked.getTag(R.string.edit_view_expanded_key);
                 if(!expanded) {
-                    editAlarmView.setVisibility(View.VISIBLE);
-                    editAlarmView.animate().y(20).setDuration(200).start();
-                    viewContainer.addView(editAlarmView, 0);
-                    daysOfWeek.setVisibility(View.INVISIBLE);
+                    // change button and set toggle tag
                     btnClicked.setImageResource(R.drawable.ic_action_close);
                     btnClicked.setTag(R.string.edit_view_expanded_key, true);
+
+                    // hide daysOfWeek
+                    daysOfWeek.setVisibility(View.INVISIBLE);
+
+                    // make editAlarmView visible and animate Y
+                    editAlarmView.setVisibility(View.VISIBLE);
+                    editAlarmView.animate().y(20).setDuration(200).start();
+                    editAlarmContainer.addView(editAlarmView, 0);
                 } else { // must be close btn click
-                    editAlarmView.animate().y(-20).setDuration(200).start();
-                    viewContainer.removeView(editAlarmView);
-                    editAlarmView.setVisibility(View.INVISIBLE);
-                    daysOfWeek.setVisibility(View.VISIBLE);
+                    // change button and set toggle tag
                     btnClicked.setTag(R.string.edit_view_expanded_key, false);
                     btnClicked.setImageResource(R.drawable.ic_action_expand);
+
+                    // show daysOfWeek
+                    daysOfWeek.setVisibility(View.VISIBLE);
+
+                    // set editAlarmView Y back and hide
+                    editAlarmView.setTranslationY(-20);
+                    editAlarmContainer.removeView(editAlarmView);
+                    editAlarmView.setVisibility(View.INVISIBLE);
                 }
             }
         });
