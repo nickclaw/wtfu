@@ -22,4 +22,5 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile files('/Users/nickclaw/Documents/School/6 2015-Winter/INFO 498/hw/wtfu/lib/gson-2.3.1.jar')
 }

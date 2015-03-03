@@ -2,15 +2,20 @@ package edu.washington.austindg.wtfu;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class AlarmListActivity extends ActionBarActivity {
+
+    public static final String TAG = "AlarmListActivity";
+    public static final List<Alarm> alarmList = new ArrayList<Alarm>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +26,12 @@ public class AlarmListActivity extends ActionBarActivity {
     @Override
     public void onPause() {
         super.onPause();
+
+        try {
+            Alarm.serialize(this, alarmList);
+        } catch (Exception e) {
+            Log.i(TAG, "Error serializing alarmList: " + e.getMessage());
+        }
     }
 
 
@@ -28,11 +39,12 @@ public class AlarmListActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
 
-        final List<Alarm> alarmList = new ArrayList<Alarm>() {{
-            add(new Alarm());
-            add(new Alarm());
-            add(new Alarm());
-        }};
+        // replace alarms
+        List<Alarm> list = Alarm.unserialize(this);
+        alarmList.clear();
+        alarmList.addAll(list);
+
+        // build list view
         ListView alarmView = (ListView) findViewById(R.id.alarmView);
         AlarmAdapter alarmAdapter = new AlarmAdapter(this, alarmList);
         alarmView.setAdapter(alarmAdapter);
