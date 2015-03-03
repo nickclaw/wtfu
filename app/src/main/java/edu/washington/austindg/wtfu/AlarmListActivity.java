@@ -75,10 +75,17 @@ public class AlarmListActivity extends ActionBarActivity
             // Start evil Preferences Activity
             return true;
         } else if(id == R.id.action_search) {
-            Insulter.getInstance().insult();
-            alarmList.add(new Alarm());
+
+            // create new alarm
+            Alarm alarm = new Alarm();
+            alarm.addPropertyChangeListener(this);
+            alarmList.add(alarm);
+
             // data change, refresh the view please
             alarmAdapter.notifyDataSetChanged();
+
+            // randomly insult user
+            Insulter.getInstance().insult();
         }
 
         return super.onOptionsItemSelected(item);
