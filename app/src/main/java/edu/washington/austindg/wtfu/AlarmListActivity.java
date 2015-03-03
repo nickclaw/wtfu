@@ -75,6 +75,7 @@ public class AlarmListActivity extends ActionBarActivity
             // Start evil Preferences Activity
             return true;
         } else if(id == R.id.action_search) {
+            Insulter.getInstance().insult();
             alarmList.add(new Alarm());
             // data change, refresh the view please
             alarmAdapter.notifyDataSetChanged();
