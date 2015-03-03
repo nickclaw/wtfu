@@ -56,6 +56,12 @@ public class Alarm implements Serializable {
         return this.enabled;
     }
 
+    /**
+     * Serialize a list of alarms to a contexts SharedPreferences
+     * @param context
+     * @param alarms
+     * @throws IOException
+     */
     public static void serialize(Context context, List<Alarm> alarms) throws IOException {
 
         // serialize alarm to json
@@ -71,6 +77,11 @@ public class Alarm implements Serializable {
         Log.i(TAG, data);
     }
 
+    /**
+     * Deserialize a list of alarms from a contexts SharedPreferences
+     * @param context
+     * @return
+     */
     public static List<Alarm> unserialize(Context context) {
         // get shared preferences
         // defaulting to empty json array
