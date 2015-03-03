@@ -42,8 +42,6 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         // editAlarmView will be added to editAlarmContainer in onClickListener for editAlarmBtn
         final View editAlarmView = inflater.inflate(R.layout.edit_alarm_layout, null);
 
-        // set editAlarmView Listeners
-
         final Alarm alarm = alarmList.get(position);
 
         TextView time = (TextView) rowView.findViewById(R.id.time);
