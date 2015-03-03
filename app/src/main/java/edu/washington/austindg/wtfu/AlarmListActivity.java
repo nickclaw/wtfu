@@ -2,15 +2,23 @@ package edu.washington.austindg.wtfu;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+public class AlarmListActivity extends ActionBarActivity
+    implements PropertyChangeListener {
 
-public class AlarmListActivity extends ActionBarActivity {
+    public static final String TAG = "AlarmListActivity";
+    public static final List<Alarm> alarmList = new ArrayList<Alarm>();
+    private AlarmAdapter alarmAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,6 +29,12 @@ public class AlarmListActivity extends ActionBarActivity {
     @Override
     public void onPause() {
         super.onPause();
+
+        try {
+            Alarm.serialize(this, alarmList);
+        } catch (Exception e) {
+            Log.i(TAG, "Error serializing alarmList: " + e.getMessage());
+        }
     }
 
 
@@ -28,14 +42,22 @@ public class AlarmListActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
 
-        final List<Alarm> alarmList = new ArrayList<Alarm>() {{
-            add(new Alarm());
-            add(new Alarm());
-            add(new Alarm());
-        }};
-        ListView alarmView = (ListView) findViewById(R.id.alarmView);
-        AlarmAdapter alarmAdapter = new AlarmAdapter(this, alarmList);
+        // replace alarms
+        List<Alarm> list = Alarm.deserialize(this);
+        alarmList.clear();
+        for (Alarm alarm : list) {
+            alarm.addPropertyChangeListener(this);
+            alarmList.add(alarm);
+        }
+
+        // build list view
+        ListView alarmView = (ListView) findViewById(R.id.alarmList);
+        alarmAdapter = new AlarmAdapter(this, alarmList);
         alarmView.setAdapter(alarmAdapter);
+    }
+
+    public void propertyChange(PropertyChangeEvent event) {
+        Log.i(TAG, "Property '" + event.getPropertyName() + "' changed: " + event.getNewValue().toString());
     }
 
     @Override
@@ -47,14 +69,15 @@ public class AlarmListActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            // Start evil Preferences Activity
             return true;
+        } else if(id == R.id.action_search) {
+            alarmList.add(new Alarm());
+            // data change, refresh the view please
+            alarmAdapter.notifyDataSetChanged();
         }
 
         return super.onOptionsItemSelected(item);
