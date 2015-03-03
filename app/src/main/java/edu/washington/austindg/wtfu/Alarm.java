@@ -22,16 +22,24 @@ import java.util.List;
 public class Alarm implements Serializable {
 
     private static final String TAG = "Alarm";
-    private static final String ALARM_KEY = "alarms";
+    private static final String ALARM_KEY = "alarms1";
+    public static final String AM = "AM";
+    public static final String PM = "PM";
 
     private int startTime;
+    private String amPm;
     private boolean[] days;
     private boolean enabled;
 
     public Alarm() {
-        startTime = 0;
-        days = new boolean[7];
-        enabled = false;
+        this(420, PM, new boolean[7], false);
+    }
+
+    public Alarm(int startTime, String amPm, boolean[] days, boolean enabled) {
+        this.startTime = startTime;
+        this.amPm = amPm;
+        this.days = days;
+        this.enabled = enabled;
     }
 
     public void setStartTime(int time) {
@@ -41,6 +49,14 @@ public class Alarm implements Serializable {
 
     public int getStartTime() {
         return this.startTime;
+    }
+
+    public void setAmPm(String amPm) {
+        this.amPm = amPm;
+    }
+
+    public String getAmPm() {
+        return this.amPm;
     }
 
     public void setDays(boolean[] days) {

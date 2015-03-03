@@ -13,12 +13,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class AlarmListActivity extends ActionBarActivity
     implements PropertyChangeListener {
 
     public static final String TAG = "AlarmListActivity";
     public static final List<Alarm> alarmList = new ArrayList<Alarm>();
+    private AlarmAdapter alarmAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +45,14 @@ public class AlarmListActivity extends ActionBarActivity
         // replace alarms
         List<Alarm> list = Alarm.deserialize(this);
         alarmList.clear();
-        for(Alarm alarm : list) {
+        for (Alarm alarm : list) {
             alarm.addPropertyChangeListener(this);
             alarmList.add(alarm);
         }
 
         // build list view
-        ListView alarmView = (ListView) findViewById(R.id.alarmView);
-        AlarmAdapter alarmAdapter = new AlarmAdapter(this, alarmList);
+        ListView alarmView = (ListView) findViewById(R.id.alarmList);
+        alarmAdapter = new AlarmAdapter(this, alarmList);
         alarmView.setAdapter(alarmAdapter);
     }
 
@@ -69,14 +69,15 @@ public class AlarmListActivity extends ActionBarActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            // Start evil Preferences Activity
             return true;
+        } else if(id == R.id.action_search) {
+            alarmList.add(new Alarm());
+            // data change, refresh the view please
+            alarmAdapter.notifyDataSetChanged();
         }
 
         return super.onOptionsItemSelected(item);
