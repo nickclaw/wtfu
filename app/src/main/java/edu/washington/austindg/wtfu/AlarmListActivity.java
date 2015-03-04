@@ -83,7 +83,7 @@ public class AlarmListActivity extends ActionBarActivity
             alarmAdapter.notifyDataSetChanged();
 
             // randomly insult user
-            Insulter.getInstance().insult();
+            //Insulter.getInstance().insult();
         }
 
         return super.onOptionsItemSelected(item);

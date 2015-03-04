@@ -65,6 +65,8 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         final ImageButton editAlarmBtn = (ImageButton) rowView.findViewById(R.id.edit_alarm_btn);
         editAlarmBtn.setTag(R.string.edit_view_expanded_key, false);
 
+        final ImageButton deleteBtn = (ImageButton) rowView.findViewById(R.id.delete_alarm);
+
         editAlarmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,17 +79,23 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
                     btnClicked.setImageResource(R.drawable.ic_action_close);
                     btnClicked.setTag(R.string.edit_view_expanded_key, true);
 
+                    // show delete ImageButton
+                    deleteBtn.setVisibility(View.VISIBLE);
+
                     // hide daysOfWeek
                     daysOfWeek.setVisibility(View.INVISIBLE);
 
                     // make editAlarmView visible and animate Y
+                    editAlarmContainer.addView(editAlarmView, editAlarmContainer.getChildCount());
                     editAlarmView.setVisibility(View.VISIBLE);
                     editAlarmView.animate().y(20).setDuration(200).start();
-                    editAlarmContainer.addView(editAlarmView, 0);
                 } else { // must be close btn click
                     // change button and set toggle tag
                     btnClicked.setTag(R.string.edit_view_expanded_key, false);
                     btnClicked.setImageResource(R.drawable.ic_action_expand);
+
+                    // hide delete ImageButton
+                    deleteBtn.setVisibility(View.GONE);
 
                     // show daysOfWeek
                     daysOfWeek.setVisibility(View.VISIBLE);
