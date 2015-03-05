@@ -45,7 +45,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         final Alarm alarm = alarmList.get(position);
 
         TextView time = (TextView) rowView.findViewById(R.id.time);
-        time.setText(Integer.toString(alarmList.get(position).getStartTime()));
+        time.setText(Integer.toString(alarm.getStartTime()));
 
         TextView amPm = (TextView) rowView.findViewById(R.id.am_pm);
         amPm.setText(alarm.getAmPm());
@@ -70,7 +70,6 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         editAlarmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Alarm clickedAlarm = alarmList.get(position);
 
                 ImageButton btnClicked = (ImageButton) v;
                 boolean expanded = (boolean) btnClicked.getTag(R.string.edit_view_expanded_key);
