@@ -2,7 +2,6 @@ package edu.washington.austindg.wtfu;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,16 +45,13 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         final View editAlarmView = inflater.inflate(R.layout.edit_alarm_layout, null);
 
         // Views in rowView
-        TextView time = (TextView) rowView.findViewById(R.id.time);
-        TextView amPm = (TextView) rowView.findViewById(R.id.am_pm);
-        Switch enabledSwitch = (Switch) rowView.findViewById(R.id.enabled_switch);
         final TextView daysOfWeek = (TextView) rowView.findViewById(R.id.days_of_week);
         final ImageButton editAlarmBtn = (ImageButton) rowView.findViewById(R.id.edit_alarm_btn);
         final ImageButton deleteBtn = (ImageButton) rowView.findViewById(R.id.delete_alarm);
+        Switch enabledSwitch = (Switch) rowView.findViewById(R.id.enabled_switch);
 
         // Set Views for rowView
-        time.setText(Integer.toString(alarm.getStartTime()));
-        amPm.setText(alarm.getAmPm());
+        setAlarmTimeUI(rowView, alarm, alarm.getStartHours(), alarm.getStartMinutes());
         daysOfWeek.setText(createDayOfWeekString(alarm.getDays()));
         enabledSwitch.setChecked(alarm.getEnabled());
         editAlarmBtn.setTag(R.string.edit_view_expanded_key, false);
@@ -76,7 +72,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         });
 
         // Views in editAlarmView
-        TimePicker timePicker = (TimePicker) editAlarmView.findViewById(R.id.time_picker);
+        final TimePicker timePicker = (TimePicker) editAlarmView.findViewById(R.id.time_picker);
         final CheckBox cbMonday = (CheckBox) editAlarmView.findViewById(R.id.cb_mon);
         final CheckBox cbTuesday = (CheckBox) editAlarmView.findViewById(R.id.cb_tue);
         final CheckBox cbWednesday = (CheckBox) editAlarmView.findViewById(R.id.cb_wed);
@@ -96,9 +92,8 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
         // Set Views for editAlarmView
         Calendar calendar = Calendar.getInstance();
-        Log.i(TAG, String.valueOf(calendar.HOUR_OF_DAY));
-        timePicker.setCurrentHour(calendar.HOUR_OF_DAY);
-        timePicker.setCurrentMinute(calendar.MINUTE);
+        timePicker.setCurrentHour(alarm.getStartHours());
+        timePicker.setCurrentMinute(alarm.getStartMinutes());
 
         boolean[] daysEnabled = alarm.getDays();
         cbMonday.setChecked(daysEnabled[0]);
@@ -164,12 +159,46 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
                     daysOfWeek.setVisibility(View.VISIBLE);
 
                     // update new alarm start
-                    // timePicker
+                    int hours = timePicker.getCurrentHour();
+                    int minutes = timePicker.getCurrentMinute();
+                    alarm.setStartHours(hours);
+                    alarm.setStartMinutes(minutes);
+
+                    // update UI
+                    setAlarmTimeUI(rowView, alarm, hours, minutes);
                 }
             }
         });
 
         return rowView;
+    }
+
+    public void setAlarmTimeUI(View rowView, Alarm alarm, int hours, int minutes) {
+        final TextView time = (TextView) rowView.findViewById(R.id.time);
+        final TextView amPm = (TextView) rowView.findViewById(R.id.am_pm);
+
+        // update UI
+        int displayHours = hours;
+        if(hours > 11 && hours <= 23) { // is pm
+            alarm.setAmPm(Alarm.PM);
+            amPm.setText(alarm.getAmPm());
+            // minus 12 from hours > 12
+            if(hours > 12) {
+                displayHours = hours - 12;
+            }
+        } else { // is am
+            alarm.setAmPm(Alarm.AM);
+            amPm.setText(alarm.getAmPm());
+            if(hours == 0) {
+                displayHours = 12;
+            }
+        }
+        String displayMinutes = String.valueOf(minutes);
+        // add 0 in front of minutes >= 0 and minutes < 10
+        if(displayMinutes.length() == 1) {
+            displayMinutes = "0" + displayMinutes;
+        }
+        time.setText(String.valueOf(displayHours) + ":" + String.valueOf(displayMinutes));
     }
 
     public String createDayOfWeekString(boolean[] days) {

@@ -24,28 +24,39 @@ public class Alarm implements Serializable {
     public static final String PM = "PM";
 
     private int startTime;
+    private int startHours;
+    private int startMinutes;
     private String amPm;
     private boolean[] days;
     private boolean enabled;
 
     public Alarm() {
-        this(320, PM, new boolean[7], false);
+        this(8, 30, AM, new boolean[7], false);
     }
 
-    public Alarm(int startTime, String amPm, boolean[] days, boolean enabled) {
-        this.startTime = startTime;
+    public Alarm(int startHours, int startMinutes, String amPm, boolean[] days, boolean enabled) {
+        this.startHours = startHours;
+        this.startMinutes = startMinutes;
         this.amPm = amPm;
         this.days = days;
         this.enabled = enabled;
     }
 
-    public void setStartTime(int time) {
-        handler.firePropertyChange("startTime", this.startTime, time);
-        this.startTime = time;
+    public void setStartHours(int hours) {
+        handler.firePropertyChange("startHours", this.startHours, hours);
+        this.startHours = hours;
     }
 
-    public int getStartTime() {
-        return this.startTime;
+    public int getStartHours() {
+        return this.startHours;
+    }
+
+    public void setStartMinutes(int mins) {
+        this.startMinutes = mins;
+    }
+
+    public int getStartMinutes() {
+        return this.startMinutes;
     }
 
     public void setAmPm(String amPm) {
