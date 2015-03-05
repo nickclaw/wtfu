@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="M"
-            android:id="@+id/checkBox"
+            android:id="@+id/cb_mon"
             android:checked="false"
             android:textSize="12dp"
             android:layout_weight="0.143" />
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="T"
-            android:id="@+id/checkBox2"
+            android:id="@+id/cb_tue"
             android:checked="false"
             android:textSize="12dp"
             android:layout_weight="0.143" />
@@ -32,7 +32,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="W"
-            android:id="@+id/checkBox3"
+            android:id="@+id/cb_wed"
             android:checked="false"
             android:textSize="12dp"
             android:layout_weight="0.143" />
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Th"
-            android:id="@+id/checkBox4"
+            android:id="@+id/cb_thu"
             android:checked="false"
             android:textSize="12dp"
             android:layout_weight="0.143" />
@@ -50,7 +50,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="F"
-            android:id="@+id/checkBox5"
+            android:id="@+id/cb_fri"
             android:checked="false"
             android:textSize="12dp"
             android:layout_weight="0.143" />
@@ -59,7 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="S"
-            android:id="@+id/checkBox6"
+            android:id="@+id/cb_sat"
             android:checked="false"
             android:textSize="12dp"
             android:layout_weight="0.143" />
@@ -68,7 +68,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Su"
-            android:id="@+id/checkBox7"
+            android:id="@+id/cb_sun"
             android:checked="false"
             android:textSize="12dp"
             android:layout_weight="0.143" />
@@ -77,7 +77,7 @@
     <TimePicker
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/timePicker"
+        android:id="@+id/time_picker"
         android:timePickerMode="spinner" />
 
 </LinearLayout>

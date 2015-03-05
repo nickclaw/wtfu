@@ -49,6 +49,7 @@ public class Alarm implements Serializable {
     }
 
     public void setAmPm(String amPm) {
+        handler.firePropertyChange("ampm", this.amPm, amPm);
         this.amPm = amPm;
     }
 

@@ -56,6 +56,11 @@ public class AlarmListActivity extends ActionBarActivity
 
     public void propertyChange(PropertyChangeEvent event) {
         Log.i(TAG, "Property '" + event.getPropertyName() + "' changed: " + event.getNewValue().toString());
+        //updateAlarmUI(event.getPropertyName(), event.getNewValue());
+    }
+
+    public void updateAlarmUI(String propertyName, String newValue) {
+
     }
 
     @Override
@@ -83,7 +88,7 @@ public class AlarmListActivity extends ActionBarActivity
             alarmAdapter.notifyDataSetChanged();
 
             // randomly insult user
-            Insulter.getInstance().insult();
+            //Insulter.getInstance().insult();
         }
 
         return super.onOptionsItemSelected(item);
