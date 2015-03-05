@@ -56,11 +56,6 @@ public class AlarmListActivity extends ActionBarActivity
 
     public void propertyChange(PropertyChangeEvent event) {
         Log.i(TAG, "Property '" + event.getPropertyName() + "' changed: " + event.getNewValue().toString());
-        //updateAlarmUI(event.getPropertyName(), event.getNewValue());
-    }
-
-    public void updateAlarmUI(String propertyName, String newValue) {
-
     }
 
     @Override

@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -91,7 +90,6 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         }};
 
         // Set Views for editAlarmView
-        Calendar calendar = Calendar.getInstance();
         timePicker.setCurrentHour(alarm.getStartHours());
         timePicker.setCurrentMinute(alarm.getStartMinutes());
 
@@ -166,11 +164,32 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
                     // update UI
                     setAlarmTimeUI(rowView, alarm, hours, minutes);
+
+                    // start alarm
+                    startAlarm(alarm);
                 }
             }
         });
 
         return rowView;
+    }
+
+    public void startAlarm(Alarm alarm) {
+
+//        long alarmStartHours = alarm.getStartHours();
+//        long alarmStartMinutes = alarm.getStartMinutes();
+//
+//        long alarmHoursMs = alarmStartHours * 60 * 60 * 1000;
+//        long alarmMinutesMs = alarmStartMinutes * 60 * 1000;
+//
+//        long currentTimeMs = System.currentTimeMillis();
+//        long alarmTimeMs = alarmHoursMs + alarmMinutesMs;
+//
+//        Intent alarmIntervalIntent = new Intent(activity, StartAlarmReceiver.class);
+//        alarmIntervalIntent.putExtra("alarm", alarm);
+//        PendingIntent pendingAlarm = PendingIntent.getBroadcast(activity, 0, alarmIntervalIntent, 0);
+//        AlarmManager manager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+//        manager.setRepeating(AlarmManager.RTC_WAKEUP, , AlarmManager.INTERVAL_DAY, pendingAlarm);
     }
 
     public void setAlarmTimeUI(View rowView, Alarm alarm, int hours, int minutes) {
