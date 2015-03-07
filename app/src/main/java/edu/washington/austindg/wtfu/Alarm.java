@@ -29,6 +29,7 @@ public class Alarm implements Serializable {
     private String amPm;
     private boolean[] days;
     private boolean enabled;
+    private int id;
 
     public Alarm() {
         this(8, 30, AM, new boolean[7], false);
@@ -40,6 +41,14 @@ public class Alarm implements Serializable {
         this.amPm = amPm;
         this.days = days;
         this.enabled = enabled;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return this.id;
     }
 
     public void setStartHours(int hours) {

@@ -1,7 +1,12 @@
 package edu.washington.austindg.wtfu;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.text.format.Time;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +20,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -37,6 +43,11 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final Alarm alarm = alarmList.get(position);
+        alarm.setId(position); // for unique PendingIntents
+        Intent alarmIntervalIntent = new Intent(activity, StartAlarmReceiver.class);
+        alarmIntervalIntent.putExtra("alarm", alarm);
+        final PendingIntent pendingAlarm = PendingIntent.getBroadcast(activity, alarm.getId(),
+                alarmIntervalIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         final LayoutInflater inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -60,6 +71,11 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 alarm.setEnabled(isChecked);
+                if(isChecked) { // switch is on
+                    startAlarm(alarm, pendingAlarm);
+                } else {
+                    stopAlarm(pendingAlarm);
+                }
             }
         });
         deleteBtn.setOnClickListener(new View.OnClickListener() {
@@ -72,21 +88,21 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
         // Views in editAlarmView
         final TimePicker timePicker = (TimePicker) editAlarmView.findViewById(R.id.time_picker);
+        final CheckBox cbSunday = (CheckBox) editAlarmView.findViewById(R.id.cb_sun);
         final CheckBox cbMonday = (CheckBox) editAlarmView.findViewById(R.id.cb_mon);
         final CheckBox cbTuesday = (CheckBox) editAlarmView.findViewById(R.id.cb_tue);
         final CheckBox cbWednesday = (CheckBox) editAlarmView.findViewById(R.id.cb_wed);
         final CheckBox cbThursday = (CheckBox) editAlarmView.findViewById(R.id.cb_thu);
         final CheckBox cbFriday = (CheckBox) editAlarmView.findViewById(R.id.cb_fri);
         final CheckBox cbSaturday = (CheckBox) editAlarmView.findViewById(R.id.cb_sat);
-        final CheckBox cbSunday = (CheckBox) editAlarmView.findViewById(R.id.cb_sun);
         final ArrayList<CheckBox> checkBoxList = new ArrayList<CheckBox>() {{
+            add(cbSunday);
             add(cbMonday);
             add(cbTuesday);
             add(cbWednesday);
             add(cbThursday);
             add(cbFriday);
             add(cbSaturday);
-            add(cbSunday);
         }};
 
         // Set Views for editAlarmView
@@ -94,13 +110,13 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         timePicker.setCurrentMinute(alarm.getStartMinutes());
 
         boolean[] daysEnabled = alarm.getDays();
-        cbMonday.setChecked(daysEnabled[0]);
-        cbTuesday.setChecked(daysEnabled[1]);
-        cbWednesday.setChecked(daysEnabled[2]);
-        cbThursday.setChecked(daysEnabled[3]);
-        cbFriday.setChecked(daysEnabled[4]);
-        cbSaturday.setChecked(daysEnabled[5]);
-        cbSunday.setChecked(daysEnabled[6]);
+        cbSunday.setChecked(daysEnabled[0]);
+        cbMonday.setChecked(daysEnabled[1]);
+        cbTuesday.setChecked(daysEnabled[2]);
+        cbWednesday.setChecked(daysEnabled[3]);
+        cbThursday.setChecked(daysEnabled[4]);
+        cbFriday.setChecked(daysEnabled[5]);
+        cbSaturday.setChecked(daysEnabled[6]);
 
         editAlarmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,8 +181,9 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
                     // update UI
                     setAlarmTimeUI(rowView, alarm, hours, minutes);
 
-                    // start alarm
-                    startAlarm(alarm);
+                    if(alarm.getEnabled()) {
+                        startAlarm(alarm, pendingAlarm);
+                    }
                 }
             }
         });
@@ -174,22 +191,46 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         return rowView;
     }
 
-    public void startAlarm(Alarm alarm) {
+    public void startAlarm(Alarm alarm, PendingIntent pendingAlarm) {
 
-//        long alarmStartHours = alarm.getStartHours();
-//        long alarmStartMinutes = alarm.getStartMinutes();
-//
-//        long alarmHoursMs = alarmStartHours * 60 * 60 * 1000;
-//        long alarmMinutesMs = alarmStartMinutes * 60 * 1000;
-//
-//        long currentTimeMs = System.currentTimeMillis();
-//        long alarmTimeMs = alarmHoursMs + alarmMinutesMs;
-//
-//        Intent alarmIntervalIntent = new Intent(activity, StartAlarmReceiver.class);
-//        alarmIntervalIntent.putExtra("alarm", alarm);
-//        PendingIntent pendingAlarm = PendingIntent.getBroadcast(activity, 0, alarmIntervalIntent, 0);
-//        AlarmManager manager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
-//        manager.setRepeating(AlarmManager.RTC_WAKEUP, , AlarmManager.INTERVAL_DAY, pendingAlarm);
+        AlarmManager manager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+
+        // set alarm timing schedule
+        Calendar cal = Calendar.getInstance();
+
+        Time nowTime = new Time();
+        nowTime.setToNow();
+        nowTime.normalize(false);
+
+        Time alarmTime = new Time();
+        int alarmStartMinutes = alarm.getStartMinutes();
+        int alarmStartHours = alarm.getStartHours();
+        alarmTime.set(cal.get(Calendar.SECOND), alarmStartMinutes, alarmStartHours,
+                cal.get(Calendar.DAY_OF_MONTH) ,cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
+        alarmTime.normalize(false);
+
+        // might get delta MS between these two.. seems to use minutes for everything
+
+        long nowTimeMs = nowTime.toMillis(true);
+        long alarmTimeMs = alarmTime.toMillis(true);
+        Log.i(TAG, "Now: " + String.valueOf(nowTimeMs));
+        Log.i(TAG, "Alarm: " + String.valueOf(alarmTimeMs));
+        Log.i(TAG, "Alarm - Now: " + String.valueOf(alarmTimeMs - nowTimeMs));
+
+        // could alarm go off today?
+        if(alarmTime.after(nowTime)) {
+            Log.i(TAG, "Will alarm today");
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTimeMs, AlarmManager.INTERVAL_DAY, pendingAlarm);
+        } else { // passed, wait until next week
+            Log.i(TAG, "Won't alarm today");
+            manager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTimeMs + AlarmManager.INTERVAL_DAY, AlarmManager.INTERVAL_DAY, pendingAlarm);
+        }
+    }
+
+    public void stopAlarm(PendingIntent pendingAlarm) {
+        AlarmManager manager = (AlarmManager) activity.getSystemService(Context.ALARM_SERVICE);
+        manager.cancel(pendingAlarm);
+        pendingAlarm.cancel();
     }
 
     public void setAlarmTimeUI(View rowView, Alarm alarm, int hours, int minutes) {
@@ -222,7 +263,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
     public String createDayOfWeekString(boolean[] days) {
         String dayOfWeekString = "";
-        String[] dayStrings = new String[] {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+        String[] dayStrings = new String[] {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
         if(days.length == 7) {
             for(int i = 0; i < days.length; i++) {
                 if(days[i]) {
