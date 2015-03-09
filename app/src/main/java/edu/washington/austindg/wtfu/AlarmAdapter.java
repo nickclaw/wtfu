@@ -20,8 +20,10 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 /**
  * Created by wtfu group
@@ -47,7 +49,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         Intent alarmIntervalIntent = new Intent(activity, StartAlarmReceiver.class);
         alarmIntervalIntent.putExtra("alarm", alarm);
         final PendingIntent pendingAlarm = PendingIntent.getBroadcast(activity, alarm.getId(),
-                alarmIntervalIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                alarmIntervalIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         final LayoutInflater inflater = (LayoutInflater) activity
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -83,6 +85,9 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
             public void onClick(View v) {
                 alarmList.remove(position);
                 AlarmAdapter.this.notifyDataSetChanged();
+
+                // cancel set alarm
+                stopAlarm(pendingAlarm);
             }
         });
 
@@ -197,32 +202,32 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
         // set alarm timing schedule
         Calendar cal = Calendar.getInstance();
+        String timeZoneId = TimeZone.getDefault().getID();
 
-        Time nowTime = new Time();
-        nowTime.setToNow();
-        nowTime.normalize(false);
-
-        Time alarmTime = new Time();
+        Time alarmTime = new Time(timeZoneId);
         int alarmStartMinutes = alarm.getStartMinutes();
         int alarmStartHours = alarm.getStartHours();
         alarmTime.set(cal.get(Calendar.SECOND), alarmStartMinutes, alarmStartHours,
                 cal.get(Calendar.DAY_OF_MONTH) ,cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
         alarmTime.normalize(false);
 
-        // might get delta MS between these two.. seems to use minutes for everything
+        Time nowTime = new Time(timeZoneId);
+        nowTime.setToNow();
+        nowTime.normalize(false);
 
         long nowTimeMs = nowTime.toMillis(true);
-        long alarmTimeMs = alarmTime.toMillis(true);
-        Log.i(TAG, "Now: " + String.valueOf(nowTimeMs));
-        Log.i(TAG, "Alarm: " + String.valueOf(alarmTimeMs));
-        Log.i(TAG, "Alarm - Now: " + String.valueOf(alarmTimeMs - nowTimeMs));
+        long alarmTimeMs = alarmTime.toMillis(true) - 40000; // ~avg delay in ms
+        Log.i(TAG, "Now ms: " + String.valueOf(nowTimeMs));
+        Log.i(TAG, "Alarm ms: " + String.valueOf(alarmTimeMs));
+        Log.i(TAG, "Will sound in (Alarm - Now) ms: " + String.valueOf(alarmTimeMs - nowTimeMs));
+        Log.i(TAG, "Before receiver: " + Arrays.toString(alarm.getDays()));
 
         // could alarm go off today?
         if(alarmTime.after(nowTime)) {
-            Log.i(TAG, "Will alarm today");
+            Log.i(TAG, "Will sound today");
             manager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTimeMs, AlarmManager.INTERVAL_DAY, pendingAlarm);
         } else { // passed, wait until next week
-            Log.i(TAG, "Won't alarm today");
+            Log.i(TAG, "Won't sound today");
             manager.setRepeating(AlarmManager.RTC_WAKEUP, alarmTimeMs + AlarmManager.INTERVAL_DAY, AlarmManager.INTERVAL_DAY, pendingAlarm);
         }
     }
