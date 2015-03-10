@@ -4,6 +4,9 @@
     <!-- Tag Keys -->
     <string name="edit_view_expanded_key">edit_view_expanded</string>
 
+    <!-- Shared Prefs Keys -->
+    <string name="alarm_key">alarms_key</string>
+
     <!-- Action Bar Settings -->
     <string name="action_settings">Preferences</string>
     <string name="action_search_add_alarm">Not sure</string>

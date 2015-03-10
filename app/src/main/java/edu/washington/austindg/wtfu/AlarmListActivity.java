@@ -18,22 +18,13 @@ public class AlarmListActivity extends ActionBarActivity
     public static final String TAG = "AlarmListActivity";
     public static final List<Alarm> alarmList = new ArrayList<Alarm>();
     private AlarmAdapter alarmAdapter;
+    private AlarmRepository alarmRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_list);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-
-        try {
-            Alarm.serialize(this, alarmList);
-        } catch (Exception e) {
-            Log.i(TAG, "Error serializing alarmList: " + e.getMessage());
-        }
+        alarmRepository = App.getAlarmRepository();
     }
 
     @Override
@@ -41,7 +32,7 @@ public class AlarmListActivity extends ActionBarActivity
         super.onResume();
 
         // replace alarms
-        List<Alarm> list = Alarm.deserialize(this);
+        List<Alarm> list = alarmRepository.deserialize(this);
         alarmList.clear();
         for (Alarm alarm : list) {
             alarm.addPropertyChangeListener(this);
@@ -52,6 +43,17 @@ public class AlarmListActivity extends ActionBarActivity
         ListView alarmView = (ListView) findViewById(R.id.alarmList);
         alarmAdapter = new AlarmAdapter(this, alarmList);
         alarmView.setAdapter(alarmAdapter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        try {
+            alarmRepository.serialize(this);
+        } catch (Exception e) {
+            Log.i(TAG, "Error serializing alarmList: " + e.getMessage());
+        }
     }
 
     public void propertyChange(PropertyChangeEvent event) {

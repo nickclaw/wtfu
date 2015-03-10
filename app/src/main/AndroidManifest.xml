@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.washington.austindg.wtfu" >
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
     <application
         android:name=".App"
         android:allowBackup="true"
@@ -19,7 +21,12 @@
         </activity>
 
         <receiver
-            android:name=".StartAlarmReceiver"
+            android:name=".AlarmReceiver"
+            android:enabled="true"
+            android:exported="true" >
+        </receiver>
+        <receiver
+            android:name=".AlarmScheduler"
             android:enabled="true"
             android:exported="true" >
         </receiver>
