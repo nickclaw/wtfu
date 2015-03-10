@@ -9,14 +9,11 @@ import android.widget.ListView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class AlarmListActivity extends ActionBarActivity
     implements PropertyChangeListener {
 
     public static final String TAG = "AlarmListActivity";
-    public static final List<Alarm> alarmList = new ArrayList<Alarm>();
     private AlarmAdapter alarmAdapter;
     private AlarmRepository alarmRepository;
 
@@ -31,17 +28,9 @@ public class AlarmListActivity extends ActionBarActivity
     public void onResume() {
         super.onResume();
 
-        // replace alarms
-        List<Alarm> list = alarmRepository.deserialize(this);
-        alarmList.clear();
-        for (Alarm alarm : list) {
-            alarm.addPropertyChangeListener(this);
-            alarmList.add(alarm);
-        }
-
         // build list view
         ListView alarmView = (ListView) findViewById(R.id.alarmList);
-        alarmAdapter = new AlarmAdapter(this, alarmList);
+        alarmAdapter = new AlarmAdapter(this, alarmRepository.deserialize());
         alarmView.setAdapter(alarmAdapter);
     }
 
@@ -50,14 +39,10 @@ public class AlarmListActivity extends ActionBarActivity
         super.onPause();
 
         try {
-            alarmRepository.serialize(this);
+            alarmRepository.serialize();
         } catch (Exception e) {
             Log.i(TAG, "Error serializing alarmList: " + e.getMessage());
         }
-    }
-
-    public void propertyChange(PropertyChangeEvent event) {
-        Log.i(TAG, "Property '" + event.getPropertyName() + "' changed: " + event.getNewValue().toString());
     }
 
     @Override
@@ -78,8 +63,7 @@ public class AlarmListActivity extends ActionBarActivity
 
             // create new alarm
             Alarm alarm = new Alarm();
-            alarm.addPropertyChangeListener(this);
-            alarmList.add(alarm);
+            alarmRepository.addAlarm(alarm);
 
             // data change, refresh the view please
             alarmAdapter.notifyDataSetChanged();

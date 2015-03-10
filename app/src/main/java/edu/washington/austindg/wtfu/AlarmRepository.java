@@ -36,10 +36,11 @@ public class AlarmRepository {
 
     /**
      * Serialize this repo's alarms to a contexts SharedPreferences
-     * @param context the application context
      * @throws java.io.IOException
      */
-    public void serialize(Context context) throws IOException {
+    public void serialize() throws IOException {
+
+        Context context = App.getContext();
 
         // serialize alarm to json
         Gson gson = new Gson();
@@ -54,12 +55,12 @@ public class AlarmRepository {
 
     /**
      * Deserialize this repo's alarms from a contexts SharedPreferences
-     * @param context the application context
      * @return the deserialized alarms
      */
-    public List<Alarm> deserialize(Context context) {
+    public List<Alarm> deserialize() {
         // get shared preferences
         // defaulting to empty json array
+        Context context = App.getContext();
         SharedPreferences prefs = context.getSharedPreferences(context.getString(R.string.alarm_key), Context.MODE_PRIVATE);
         String data = prefs.getString(context.getString(R.string.alarm_key), "[]");
 

@@ -3,6 +3,7 @@ package edu.washington.austindg.wtfu;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
+import java.util.Arrays;
 
 /**
  * Created by austindg on 2/27/15.
@@ -82,6 +83,13 @@ public class Alarm implements Serializable {
 
     public boolean getEnabled() {
         return this.enabled;
+    }
+
+    public String toString() {
+        return "Alarm " + getId() + ": {hour: " + getStartHours() +
+                ", minutes: " + getStartMinutes() +
+                ", daysEnabled: " + Arrays.toString(getDays()) +
+                "}";
     }
 
     //
