@@ -24,7 +24,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="PM"
+            android:text="AM"
             android:id="@+id/am_pm" />
         <View android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -44,11 +44,19 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/activity_vertical_margin">
 
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/delete_alarm"
+            android:visibility="gone"
+            android:src="@drawable/ic_stat_delete"
+            android:background="#00000000" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Day of week string"
+            android:text="No Repeat"
             android:id="@+id/days_of_week"
             android:textSize="16dp"
             android:textIsSelectable="true" />

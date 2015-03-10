@@ -46,9 +46,7 @@ public class Insulter implements TextToSpeech.OnInitListener {
         this.status = TextToSpeech.STOPPED;
         this.queue = new LinkedList<String>();
 
-
         this.insults = Arrays.asList(res.getStringArray(R.array.insults));
-
     }
 
     public void say(String insult) {
