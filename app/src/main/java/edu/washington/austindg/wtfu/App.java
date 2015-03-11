@@ -9,16 +9,21 @@ import android.content.Context;
 public class App extends Application {
 
     private static Context context;
-
-    public static Context getContext() {
-        return context;
-    }
+    private static AlarmRepository alarmRepository;
+    private static AlarmScheduler alarmScheduler;
 
     @Override
     public void onCreate() {
         super.onCreate();
         context = this;
+        alarmRepository = AlarmRepository.getInstance();
+        alarmScheduler = AlarmScheduler.getInstance();
     }
 
-
+    // getters
+    public static Context getContext() {
+        return context;
+    }
+    public static AlarmRepository getAlarmRepository() { return alarmRepository; }
+    public static AlarmScheduler getAlarmScheduler() { return alarmScheduler; }
 }
