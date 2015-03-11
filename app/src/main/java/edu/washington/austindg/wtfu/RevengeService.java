@@ -11,14 +11,12 @@ import android.content.Context;
  * TODO: Customize class - update intent actions, extra parameters and static
  * helper methods.
  */
-public class RevengeService extends IntentService {
+public abstract class RevengeService extends IntentService {
 
+    public RevengeService(String name) {super(name);}
     public RevengeService() {
         super("RevengeService");
     }
 
-    @Override
-    protected void onHandleIntent(Intent intent) {
-
-    }
+    // util functions?
 }

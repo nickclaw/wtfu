@@ -23,6 +23,10 @@ public class EditContactRevenge extends RevengeService {
     private ContentResolver cr;
     private String[] names;
 
+    public EditContactRevenge() {
+        super("EditContactRevenge");
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
