@@ -7,9 +7,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
 public class AlarmListActivity extends ActionBarActivity {
 
     public static final String TAG = "AlarmListActivity";
@@ -36,7 +33,6 @@ public class AlarmListActivity extends ActionBarActivity {
     @Override
     public void onPause() {
         super.onPause();
-
         try {
             alarmRepository.serialize();
         } catch (Exception e) {

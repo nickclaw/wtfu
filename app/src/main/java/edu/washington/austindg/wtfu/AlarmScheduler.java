@@ -9,6 +9,7 @@ import android.text.format.Time;
 import android.util.Log;
 
 import java.util.Calendar;
+import java.util.List;
 import java.util.TimeZone;
 
 public class AlarmScheduler extends BroadcastReceiver {
@@ -16,7 +17,7 @@ public class AlarmScheduler extends BroadcastReceiver {
     public static String TAG = AlarmScheduler.class.getSimpleName();
     private static AlarmScheduler alarmScheduler = new AlarmScheduler();
 
-    public AlarmScheduler() {  }
+    private AlarmScheduler() {  }
 
     public static AlarmScheduler getInstance() {
         return alarmScheduler;
@@ -32,9 +33,7 @@ public class AlarmScheduler extends BroadcastReceiver {
         String timeZoneId = TimeZone.getDefault().getID();
 
         Time alarmTime = new Time(timeZoneId);
-        int alarmStartMinutes = alarm.getStartMinutes();
-        int alarmStartHours = alarm.getStartHours();
-        alarmTime.set(cal.get(Calendar.SECOND), alarmStartMinutes, alarmStartHours,
+        alarmTime.set(00, alarm.getStartMinutes(), alarm.getStartHours(),
                 cal.get(Calendar.DAY_OF_MONTH) ,cal.get(Calendar.MONTH), cal.get(Calendar.YEAR));
 
         Time nowTime = new Time(timeZoneId);
@@ -45,11 +44,30 @@ public class AlarmScheduler extends BroadcastReceiver {
 
         // could alarm go off today?
         if(alarmTime.after(nowTime)) {
-            Log.i(TAG, "Alarm will sound in: " + String.valueOf(alarmTimeMs - nowTimeMs) + "milliseconds");
+            Log.i(TAG, "Alarm will sound in: " + String.valueOf(alarmTimeMs - nowTimeMs) + " milliseconds");
             manager.setExact(AlarmManager.RTC_WAKEUP, alarmTimeMs, pendingAlarm);
         } else { // passed, wait until next week
             Log.i(TAG, "Alarm won't sound today, but next week");
             manager.setExact(AlarmManager.RTC_WAKEUP, alarmTimeMs + AlarmManager.INTERVAL_DAY, pendingAlarm);
+        }
+    }
+
+    public void startAlarms(List<Alarm> alarms) {
+        for(Alarm alarm: alarms) {
+            startAlarm(alarm);
+        }
+    }
+
+    public void stopAlarm(Alarm alarm) {
+        AlarmManager manager = (AlarmManager) App.getContext().getSystemService(Context.ALARM_SERVICE);
+        PendingIntent alarmToCancel = createPendingIntent(alarm);
+        manager.cancel(alarmToCancel);
+        alarmToCancel.cancel();
+    }
+
+    public void stopAlarms(List<Alarm> alarms) {
+        for(Alarm alarm: alarms) {
+            stopAlarm(alarm);
         }
     }
 
@@ -61,15 +79,10 @@ public class AlarmScheduler extends BroadcastReceiver {
         return pendingAlarm;
     }
 
-    public void stopAlarm(Alarm alarm) {
-        AlarmManager manager = (AlarmManager) App.getContext().getSystemService(Context.ALARM_SERVICE);
-        PendingIntent alarmToCancel = createPendingIntent(alarm);
-        manager.cancel(alarmToCancel);
-        alarmToCancel.cancel();
-    }
-
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.i(TAG, "Device Boot: Start alarms again");
+        List<Alarm> alarmList = App.getAlarmRepository().deserialize();
+        startAlarms(alarmList);
     }
 }
