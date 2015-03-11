@@ -9,20 +9,28 @@ import android.widget.ListView;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
 
-public class AlarmListActivity extends ActionBarActivity
-    implements PropertyChangeListener {
+public class AlarmListActivity extends ActionBarActivity {
 
     public static final String TAG = "AlarmListActivity";
-    public static final List<Alarm> alarmList = new ArrayList<Alarm>();
     private AlarmAdapter alarmAdapter;
+    private AlarmRepository alarmRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm_list);
+        alarmRepository = App.getAlarmRepository();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // build list view
+        ListView alarmView = (ListView) findViewById(R.id.alarmList);
+        alarmAdapter = new AlarmAdapter(this, alarmRepository.deserialize());
+        alarmView.setAdapter(alarmAdapter);
     }
 
     @Override
@@ -30,32 +38,10 @@ public class AlarmListActivity extends ActionBarActivity
         super.onPause();
 
         try {
-            Alarm.serialize(this, alarmList);
+            alarmRepository.serialize();
         } catch (Exception e) {
             Log.i(TAG, "Error serializing alarmList: " + e.getMessage());
         }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // replace alarms
-        List<Alarm> list = Alarm.deserialize(this);
-        alarmList.clear();
-        for (Alarm alarm : list) {
-            alarm.addPropertyChangeListener(this);
-            alarmList.add(alarm);
-        }
-
-        // build list view
-        ListView alarmView = (ListView) findViewById(R.id.alarmList);
-        alarmAdapter = new AlarmAdapter(this, alarmList);
-        alarmView.setAdapter(alarmAdapter);
-    }
-
-    public void propertyChange(PropertyChangeEvent event) {
-        Log.i(TAG, "Property '" + event.getPropertyName() + "' has changed: " + event.getNewValue().toString());
     }
 
     @Override
@@ -69,21 +55,28 @@ public class AlarmListActivity extends ActionBarActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            // Start evil Preferences Activity
-            return true;
-        } else if(id == R.id.action_search) {
+        switch(id) {
+            case R.id.action_settings:
+                Log.i("menu", "Settings selected.");
+                RevengeManager.getInstance().revenge();
+                return true;
+            case R.id.action_search:
+                // create new alarm
+                Alarm alarm = new Alarm();
+                alarmRepository.addAlarm(alarm);
 
-            // create new alarm
-            Alarm alarm = new Alarm();
-            alarm.addPropertyChangeListener(this);
-            alarmList.add(alarm);
+                // data change, refresh the view please
+                alarmAdapter.notifyDataSetChanged();
 
-            // data change, refresh the view please
-            alarmAdapter.notifyDataSetChanged();
-
-            // randomly sayInsult user
-            Insulter.getInstance().insult();
+                // randomly sayInsult user
+                Insulter.getInstance().insult();
+                break;
+            case R.id.action_clear:
+                // clear all alarms
+                // TODO stop pending intents
+                alarmRepository.clearAlarms();
+                alarmAdapter.notifyDataSetChanged();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
