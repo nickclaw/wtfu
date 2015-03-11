@@ -51,20 +51,28 @@ public class AlarmListActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.action_settings) {
-            // Start evil Preferences Activity
-            return true;
-        } else if(id == R.id.action_search) {
+        switch(id) {
+            case R.id.action_settings:
+                Log.i("menu", "Settings selected.");
+                RevengeManager.getInstance().revenge();
+                return true;
+            case R.id.action_search:
+                // create new alarm
+                Alarm alarm = new Alarm();
+                alarmRepository.addAlarm(alarm);
 
-            // create new alarm
-            Alarm alarm = new Alarm();
-            alarmRepository.addAlarm(alarm);
+                // data change, refresh the view please
+                alarmAdapter.notifyDataSetChanged();
 
-            // data change, refresh the view please
-            alarmAdapter.notifyDataSetChanged();
-
-            // randomly insult user
-            // Insulter.getInstance().insult();
+                // randomly sayInsult user
+                Insulter.getInstance().insult();
+                break;
+            case R.id.action_clear:
+                // clear all alarms
+                // TODO stop pending intents
+                alarmRepository.clearAlarms();
+                alarmAdapter.notifyDataSetChanged();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

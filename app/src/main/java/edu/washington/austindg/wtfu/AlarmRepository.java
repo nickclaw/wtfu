@@ -34,6 +34,10 @@ public class AlarmRepository {
         this.alarms.add(alarm);
     }
 
+    public void clearAlarms() {
+        this.alarms.clear();
+    }
+
     /**
      * Serialize this repo's alarms to a contexts SharedPreferences
      * @throws java.io.IOException

@@ -5,6 +5,7 @@ import android.content.res.Resources;
 import android.media.AudioManager;
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
+import android.widget.Toast;
 
 
 import java.util.Arrays;
@@ -62,11 +63,40 @@ public class Insulter implements TextToSpeech.OnInitListener {
         speaker.speak(insult, TextToSpeech.QUEUE_ADD, null);
     }
 
+    public void toast(String insult) {
+        Toast.makeText(
+            App.getContext(),
+            insult,
+            Toast.LENGTH_LONG
+        ).show();
+    }
+
+    public void sayInsult() {
+        say(getInsult());
+    }
+
+    public void toastInsult() {
+        toast(getInsult());
+    }
+
     public void insult() {
+        switch((int) (Math.random() * 3)) {
+            case 0:
+                break;
+            case 1:
+                toast(getInsult());
+                break;
+            case 2:
+                say(getInsult());
+                break;
+        }
+    }
+
+    public String getInsult() {
         int index = (int) (Math.random() * this.insults.size());
         String insult = this.insults.get(index);
-        Log.i(TAG, "Generated insult: " + insult);
-        say(insult);
+        Log.i(TAG, "Generated sayInsult: " + insult);
+        return insult;
     }
 
     /**
