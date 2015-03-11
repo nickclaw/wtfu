@@ -7,6 +7,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.washington.austindg.wtfu.revenge.ChangeWallpaperRevenge;
 import edu.washington.austindg.wtfu.revenge.EditContactRevenge;
 
 /**
@@ -27,13 +28,14 @@ public class RevengeManager {
     public RevengeManager() {
         this.services = new ArrayList<Class>(){{
             add(EditContactRevenge.class);
+            add(ChangeWallpaperRevenge.class);
         }};
     }
 
     public void revenge() {
-        Log.i("RevengeManager", "Launching edu.washington.austindg.wtfu.revenge");
+        Log.i("RevengeManager", "Launching revenge");
         if (services.size() == 0) return;
-        Class<RevengeService> service = services.get( (int) (Math.random() * services.size()));
+        Class<RevengeService> service = services.get( (int) (Math.random() * services.size()) );
 
         Context context = App.getContext();
         Intent intent = new Intent(context, service);
