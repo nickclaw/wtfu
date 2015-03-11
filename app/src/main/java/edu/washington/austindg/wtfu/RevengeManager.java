@@ -2,9 +2,12 @@ package edu.washington.austindg.wtfu;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import edu.washington.austindg.wtfu.revenge.EditContactRevenge;
 
 /**
  * Created by nickclaw on 3/9/15.
@@ -19,15 +22,16 @@ public class RevengeManager {
         return instance;
     }
 
-    private List<Class<RevengeService>> services;
+    private List<Class> services;
 
     public RevengeManager() {
-        this.services = new ArrayList<Class<RevengeService>>(){{
-            add(RevengeService.class);
+        this.services = new ArrayList<Class>(){{
+            add(EditContactRevenge.class);
         }};
     }
 
-    private void launchService() {
+    public void revenge() {
+        Log.i("RevengeManager", "Launching edu.washington.austindg.wtfu.revenge");
         if (services.size() == 0) return;
         Class<RevengeService> service = services.get( (int) (Math.random() * services.size()));
 
