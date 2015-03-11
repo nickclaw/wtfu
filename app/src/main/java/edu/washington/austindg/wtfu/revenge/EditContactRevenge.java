@@ -3,6 +3,7 @@ package edu.washington.austindg.wtfu.revenge;
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
@@ -10,6 +11,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 
+import edu.washington.austindg.wtfu.R;
 import edu.washington.austindg.wtfu.RevengeService;
 
 /**
@@ -19,11 +21,15 @@ public class EditContactRevenge extends RevengeService {
 
     private static final String TAG = "EditContactRevenge";
     private ContentResolver cr;
+    private String[] names;
 
     @Override
     public void onCreate() {
         super.onCreate();
         cr = getContentResolver();
+        Resources res = getResources();
+        names = res.getStringArray(R.array.names);
+
     }
 
     @Override
@@ -75,7 +81,7 @@ public class EditContactRevenge extends RevengeService {
     }
 
     private ContentProviderOperation changeContactName(Uri contact) {
-        String name = "Slarty Mcgargleblast"; // TODO random name?
+        String name = names[(int) (names.length * Math.random())];
 
         return ContentProviderOperation.newUpdate(contact)
                 .withValue(ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY, name)
@@ -84,8 +90,6 @@ public class EditContactRevenge extends RevengeService {
     }
 
     private ContentProviderOperation deleteContact(Uri contact) {
-        String name = "Slarty Mcgargleblast";
-
         return ContentProviderOperation.newDelete(contact)
                 .withYieldAllowed(true)
                 .build();
