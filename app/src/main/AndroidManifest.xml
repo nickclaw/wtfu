@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <application
         android:name=".App"
@@ -47,6 +48,11 @@
             android:name=".revenge.ChangeWallpaperRevenge"
             android:exported="false" >
         </service>
+
+        <activity
+            android:name=".WakeTheFuckUpActivity"
+            android:label="@string/title_activity_wake_the_fuck_up" >
+        </activity>
     </application>
 
 </manifest>

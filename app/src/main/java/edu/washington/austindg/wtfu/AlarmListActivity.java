@@ -16,6 +16,7 @@ public class AlarmListActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_alarm_list);
         alarmRepository = App.getAlarmRepository();
     }

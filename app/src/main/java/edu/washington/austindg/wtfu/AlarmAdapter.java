@@ -15,6 +15,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,6 +121,12 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
                     if(alarm.getEnabled()) {
                         alarmScheduler.startAlarm(alarm);
+                    }
+
+                    try {
+                        App.getAlarmRepository().serialize();
+                    } catch(IOException e) {
+                        Log.e(TAG, e.getMessage());
                     }
                 }
             }

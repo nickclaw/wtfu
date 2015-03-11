@@ -17,14 +17,13 @@ public class AlarmScheduler extends BroadcastReceiver {
     public static String TAG = AlarmScheduler.class.getSimpleName();
     private static AlarmScheduler alarmScheduler = new AlarmScheduler();
 
-    private AlarmScheduler() {  }
+    public AlarmScheduler() {  }
 
     public static AlarmScheduler getInstance() {
         return alarmScheduler;
     }
 
     public void startAlarm(Alarm alarm) {
-
         AlarmManager manager = (AlarmManager) App.getContext().getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingAlarm = createPendingIntent(alarm);
 
@@ -44,7 +43,7 @@ public class AlarmScheduler extends BroadcastReceiver {
 
         // could alarm go off today?
         if(alarmTime.after(nowTime)) {
-            Log.i(TAG, "Alarm will sound in: " + String.valueOf(alarmTimeMs - nowTimeMs) + " milliseconds");
+            Log.i(TAG, "Alarm will sound in: " + String.valueOf((alarmTimeMs - nowTimeMs) / 1000) + " seconds");
             manager.setExact(AlarmManager.RTC_WAKEUP, alarmTimeMs, pendingAlarm);
         } else { // passed, wait until next week
             Log.i(TAG, "Alarm won't sound today, but next week");
