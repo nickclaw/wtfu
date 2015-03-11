@@ -34,8 +34,8 @@ public class AlarmStartReceiver extends BroadcastReceiver {
 
                 // snooze or stop activities start.. insult ppl
 
-                //Insulter insulter = Insulter.getInstance();
-                //insulter.insult();
+                Insulter insulter = Insulter.getInstance();
+                insulter.insult();
             } else {
                 Log.i(TAG, "Wrong day of week or wasn't enabled");
             }

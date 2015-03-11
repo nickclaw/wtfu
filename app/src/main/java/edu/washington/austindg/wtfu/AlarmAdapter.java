@@ -2,6 +2,7 @@ package edu.washington.austindg.wtfu;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -131,6 +132,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
                     alarmScheduler.startAlarm(alarm);
                 } else {
                     alarmScheduler.stopAlarm(alarm);
+                    Log.i(TAG, "Alarm " + alarm.getId() + " stopped");
                 }
             }
         });
@@ -142,6 +144,8 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
 
                 // cancel set alarm
                 alarmScheduler.stopAlarm(alarm);
+
+                Log.i(TAG, "Alarm " + alarm.getId() + " stopped and deleted");
             }
         });
 

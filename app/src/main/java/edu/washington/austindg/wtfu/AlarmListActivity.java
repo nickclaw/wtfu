@@ -7,11 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-
-public class AlarmListActivity extends ActionBarActivity
-    implements PropertyChangeListener {
+public class AlarmListActivity extends ActionBarActivity {
 
     public static final String TAG = "AlarmListActivity";
     private AlarmAdapter alarmAdapter;
