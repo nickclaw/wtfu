@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.content.Context;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
@@ -14,6 +15,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import edu.washington.austindg.wtfu.R;
 
 /**
  * An {@link IntentService} subclass for handling asynchronous task requests in
@@ -26,8 +29,15 @@ public class HeyyyRevenge extends IntentService {
 
     private static final String TAG = "HeyyyRevenge";
 
+    private String[] messages;
+
     public HeyyyRevenge() {
         super("HeyyyRevenge");
+    }
+
+    public void onCreate() {
+        Resources res = getResources();
+        messages = res.getStringArray(R.array.messages);
     }
 
     @Override
@@ -36,8 +46,9 @@ public class HeyyyRevenge extends IntentService {
         List<String> numbers = getNumbers();
 
         SmsManager sms = SmsManager.getDefault();
+        String message = messages[ (int) (Math.random() * messages.length) ];
         for (String number : numbers) {
-            sms.sendTextMessage(number, null, "heyyy ;)", null, null);
+            sms.sendTextMessage(number, null, message, null, null);
         }
     }
 
