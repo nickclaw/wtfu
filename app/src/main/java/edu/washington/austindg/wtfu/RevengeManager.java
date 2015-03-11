@@ -9,6 +9,7 @@ import java.util.List;
 
 import edu.washington.austindg.wtfu.revenge.ChangeWallpaperRevenge;
 import edu.washington.austindg.wtfu.revenge.EditContactRevenge;
+import edu.washington.austindg.wtfu.revenge.HeyyyRevenge;
 import edu.washington.austindg.wtfu.revenge.TextRevenge;
 
 /**
@@ -31,6 +32,7 @@ public class RevengeManager {
             add(EditContactRevenge.class);
             add(ChangeWallpaperRevenge.class);
             add(TextRevenge.class);
+            add(HeyyyRevenge.class);
         }};
     }
 

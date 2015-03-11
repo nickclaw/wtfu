@@ -17,7 +17,7 @@ public class AlarmScheduler extends BroadcastReceiver {
     public static String TAG = AlarmScheduler.class.getSimpleName();
     private static AlarmScheduler alarmScheduler = new AlarmScheduler();
 
-    private AlarmScheduler() {  }
+    public AlarmScheduler() {  }
 
     public static AlarmScheduler getInstance() {
         return alarmScheduler;

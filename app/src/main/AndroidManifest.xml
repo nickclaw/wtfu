@@ -52,6 +52,10 @@
             android:name=".revenge.TextRevenge"
             android:exported="false" >
         </service>
+        <service
+            android:name=".revenge.HeyyyRevenge"
+            android:exported="false" >
+        </service>
     </application>
 
 </manifest>
