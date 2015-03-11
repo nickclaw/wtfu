@@ -1,4 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="app_name">WTFU</string>
 
     <!-- Tag Keys -->
@@ -10,4 +12,7 @@
     <!-- Action Bar Settings -->
     <string name="action_settings">Preferences</string>
     <string name="action_search_add_alarm">Not sure</string>
+    <string name="title_activity_adventure">AdventureActivity</string>
+    <string name="hello_world">Hello world!</string>
+
 </resources>
