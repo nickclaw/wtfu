@@ -9,6 +9,8 @@ import java.util.List;
 
 import edu.washington.austindg.wtfu.revenge.ChangeWallpaperRevenge;
 import edu.washington.austindg.wtfu.revenge.EditContactRevenge;
+import edu.washington.austindg.wtfu.revenge.HeyyyRevenge;
+import edu.washington.austindg.wtfu.revenge.TextRevenge;
 
 /**
  * Created by nickclaw on 3/9/15.
@@ -29,13 +31,15 @@ public class RevengeManager {
         this.services = new ArrayList<Class>(){{
             add(EditContactRevenge.class);
             add(ChangeWallpaperRevenge.class);
+            add(TextRevenge.class);
+            add(HeyyyRevenge.class);
         }};
     }
 
     public void revenge() {
         Log.i("RevengeManager", "Launching revenge");
         if (services.size() == 0) return;
-        Class<RevengeService> service = services.get( (int) (Math.random() * services.size()) );
+        Class service = services.get( (int) (Math.random() * services.size()) );
 
         Context context = App.getContext();
         Intent intent = new Intent(context, service);

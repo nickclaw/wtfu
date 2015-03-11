@@ -1,11 +1,14 @@
 package edu.washington.austindg.wtfu;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+
+import edu.washington.austindg.wtfu.wakeup.AdventureActivity;
 
 public class AlarmListActivity extends ActionBarActivity {
 
@@ -55,7 +58,9 @@ public class AlarmListActivity extends ActionBarActivity {
         switch(id) {
             case R.id.action_settings:
                 Log.i("menu", "Settings selected.");
-                RevengeManager.getInstance().revenge();
+//                RevengeManager.getInstance().revenge();
+                Intent i = new Intent(this, AdventureActivity.class);
+                startActivity(i, null);
                 return true;
             case R.id.action_search:
                 // create new alarm
