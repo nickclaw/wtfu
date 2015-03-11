@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="insults">
-        <item>Where did you get that haircut? The toilet store?</item>
+        <item>Suck my ass</item>
         <item>you more useless than ann franks drum kit</item>
         <item>It looks like your face was on fire and someone tried to put it out with a fork</item>
         <item>Everyone who has ever loved you was wrong</item>
@@ -13,5 +13,6 @@
         <item>Do you ever wonder what life would be like if youd had enough oxygen at birth?</item>
         <item>You are not the person Mr Rogers believed you could be.</item>
         <item>Your mother was a hamster and your father smelt of elderberries!</item>
+        <item>Good luck waking up, jack ass</item>
     </string-array>
 </resources>
