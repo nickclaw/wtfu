@@ -33,7 +33,6 @@ public class AlarmListActivity extends ActionBarActivity {
     @Override
     public void onPause() {
         super.onPause();
-
         try {
             alarmRepository.serialize();
         } catch (Exception e) {
