@@ -54,7 +54,6 @@ public class AlarmListActivity extends ActionBarActivity {
         switch(id) {
             case R.id.action_settings:
                 Log.i("menu", "Settings selected.");
-                RevengeManager.getInstance().revenge();
                 return true;
             case R.id.action_search:
                 // create new alarm
