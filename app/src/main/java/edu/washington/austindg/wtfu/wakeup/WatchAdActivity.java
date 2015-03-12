@@ -81,6 +81,7 @@ public class WatchAdActivity extends WakeupActivity {
         if(views < 5) {
             finish();
         } else {
+            DeviceControl.stopAlarmAudio();
             done();
         }
     }
