@@ -53,6 +53,8 @@ public class WakeupManager {
     public void restore(Activity context) {
         Log.i(TAG, "Trying to restore");
         if (current != null) {
+            // randomly sayInsult user
+            Insulter.getInstance().insult();
             Intent intent = new Intent(context, current);
             context.startActivity(intent, null);
         }

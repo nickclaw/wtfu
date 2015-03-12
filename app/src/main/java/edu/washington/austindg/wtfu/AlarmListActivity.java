@@ -59,12 +59,14 @@ public class AlarmListActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
+        // randomly sayInsult user
+        Insulter.getInstance().insult();
+
         switch(id) {
             case R.id.action_settings:
                 Log.i("menu", "Settings selected.");
-//                RevengeManager.getInstance().revenge();
-//                Intent i = new Intent(this, ImALittleFatGirlActivity.class);
-//                startActivity(i, null);
+                Intent i = new Intent(this, SettingsActivity.class);
+                startActivity(i);
                 return true;
             case R.id.action_search:
                 // create new alarm
@@ -73,9 +75,6 @@ public class AlarmListActivity extends ActionBarActivity {
 
                 // data change, refresh the view please
                 alarmAdapter.notifyDataSetChanged();
-
-                // randomly sayInsult user
-                Insulter.getInstance().insult();
                 break;
             case R.id.action_clear:
                 // clear all alarms

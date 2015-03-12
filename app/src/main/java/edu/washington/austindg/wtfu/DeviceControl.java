@@ -35,6 +35,11 @@ public class DeviceControl {
         }
     }
 
+    public static void playOnce(Activity activity, int id) {
+        setDeviceMaxVolume(activity);
+        MediaPlayer.create(activity, id).start();
+    }
+
     public static void pauseAlarmAudio() {
         if (mediaPlayer != null) {
             mediaPlayer.pause();

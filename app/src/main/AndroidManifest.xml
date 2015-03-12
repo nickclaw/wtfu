@@ -109,6 +109,11 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_im_alittle_fat_girl"
             android:screenOrientation="portrait" ></activity>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
     </application>
 
 </manifest>

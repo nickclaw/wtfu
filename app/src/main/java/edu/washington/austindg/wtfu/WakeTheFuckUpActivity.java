@@ -49,6 +49,9 @@ public class WakeTheFuckUpActivity extends WakeupActivity {
                 RevengeManager.getInstance().revenge();
                 DeviceControl.stopAlarmAudio();
                 App.getAlarmScheduler().startSnoozeForAlarm(alarm, 1);
+
+                // randomly sayInsult user
+                Insulter.getInstance().insult();
                 done();
             }
         });
