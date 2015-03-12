@@ -103,7 +103,7 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
                     int minutes = timePicker.getCurrentMinute();
                     String displayMinutes = makeDisplayMinutes(minutes);
                     String displayHours = makeDisplayHours(hours);
-                    String amPm = amPmFromHours(hours);
+                    String amPm = AlarmScheduler.amPmFromHours(hours);
                     boolean[] newDays = getRepeatDaysFromEditAlarm(rowView);
 
                     // update Views
@@ -229,14 +229,6 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
             displayMinutes = "0" + displayMinutes;
         }
         return displayMinutes;
-    }
-
-    public String amPmFromHours(int hours) {
-        if(hours > 11 && hours <= 23) { // is pm
-            return Alarm.PM;
-        } else { // is am
-            return Alarm.AM;
-        }
     }
 
     public String createDayOfWeekString(boolean[] days) {

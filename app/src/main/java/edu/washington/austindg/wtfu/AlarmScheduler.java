@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.text.format.Time;
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TimeZone;
@@ -15,6 +16,7 @@ import java.util.TimeZone;
 public class AlarmScheduler extends BroadcastReceiver {
 
     public static String TAG = AlarmScheduler.class.getSimpleName();
+    public static final int STARTING_SNOOZE_ID = 2000;
     private static AlarmScheduler alarmScheduler = new AlarmScheduler();
 
     public AlarmScheduler() {  }
@@ -25,7 +27,7 @@ public class AlarmScheduler extends BroadcastReceiver {
 
     public void startAlarm(Alarm alarm) {
         AlarmManager manager = (AlarmManager) App.getContext().getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingAlarm = createPendingIntent(alarm);
+        PendingIntent pendingAlarm = createPendingIntent(alarm, false);
 
         // set alarm timing schedule
         Calendar cal = Calendar.getInstance();
@@ -51,6 +53,21 @@ public class AlarmScheduler extends BroadcastReceiver {
         }
     }
 
+    public void startSnoozeForAlarm(Alarm alarm, int delayMinutes) {
+        AlarmManager manager = (AlarmManager) App.getContext().getSystemService(Context.ALARM_SERVICE);
+        boolean[] days = new boolean[7];
+        Arrays.fill(days, true);
+        Alarm snoozeAlarm = new Alarm();
+        snoozeAlarm.setDays(days);
+        snoozeAlarm.setEnabled(true);
+        snoozeAlarm.setId(alarm.getId() + STARTING_SNOOZE_ID);
+
+        long snoozeTime = minutesToMilliseconds(delayMinutes);
+        PendingIntent pendingAlarm = createPendingIntent(alarm, true);
+        manager.setExact(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + snoozeTime, pendingAlarm);
+        Log.i(TAG, "Snooze Alarm will start in " + delayMinutes + " min");
+    }
+
     public void startAlarms(List<Alarm> alarms) {
         for(Alarm alarm: alarms) {
             startAlarm(alarm);
@@ -59,7 +76,7 @@ public class AlarmScheduler extends BroadcastReceiver {
 
     public void stopAlarm(Alarm alarm) {
         AlarmManager manager = (AlarmManager) App.getContext().getSystemService(Context.ALARM_SERVICE);
-        PendingIntent alarmToCancel = createPendingIntent(alarm);
+        PendingIntent alarmToCancel = createPendingIntent(alarm, false);
         manager.cancel(alarmToCancel);
         alarmToCancel.cancel();
     }
@@ -70,12 +87,27 @@ public class AlarmScheduler extends BroadcastReceiver {
         }
     }
 
-    public static PendingIntent createPendingIntent(Alarm alarm) {
+    public static PendingIntent createPendingIntent(Alarm alarm, boolean snoozeAlarm) {
         Intent alarmReceiverIntent = new Intent(App.getContext(), AlarmStartReceiver.class);
         alarmReceiverIntent.putExtra("alarm", alarm);
+        if(snoozeAlarm) {
+            alarmReceiverIntent.putExtra("snooze", true);
+        }
         PendingIntent pendingAlarm = PendingIntent.getBroadcast(App.getContext(), alarm.getId(),
                 alarmReceiverIntent, PendingIntent.FLAG_CANCEL_CURRENT);
         return pendingAlarm;
+    }
+
+    public static String amPmFromHours(int hours) {
+        if(hours > 11 && hours <= 23) { // is pm
+            return Alarm.PM;
+        } else { // is am
+            return Alarm.AM;
+        }
+    }
+
+    public static long minutesToMilliseconds(int minutes) {
+        return minutes * 60 * 1000;
     }
 
     @Override

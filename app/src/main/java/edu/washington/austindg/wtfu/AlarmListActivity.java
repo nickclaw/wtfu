@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.util.List;
+
 import edu.washington.austindg.wtfu.wakeup.AdventureActivity;
 
 public class AlarmListActivity extends ActionBarActivity {
@@ -71,11 +73,12 @@ public class AlarmListActivity extends ActionBarActivity {
                 alarmAdapter.notifyDataSetChanged();
 
                 // randomly sayInsult user
-                Insulter.getInstance().insult();
+                // Insulter.getInstance().insult();
                 break;
             case R.id.action_clear:
                 // clear all alarms
-                // TODO stop pending intents
+                List<Alarm> alarms = alarmRepository.getAlarms();
+                App.getAlarmScheduler().stopAlarms(alarms);
                 alarmRepository.clearAlarms();
                 alarmAdapter.notifyDataSetChanged();
                 return true;
