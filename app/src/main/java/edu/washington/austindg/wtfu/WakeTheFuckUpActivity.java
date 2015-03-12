@@ -66,18 +66,6 @@ public class WakeTheFuckUpActivity extends WakeupActivity {
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == 1) {
-            if(resultCode == RESULT_OK){
-                finish();
-            }
-            if (resultCode == RESULT_CANCELED) {
-                startWakeupActivity();
-            }
-        }
-    }
-
     public void startSeizureLoop() {
         LinearLayout layout = (LinearLayout) findViewById(R.id.wtfu_text_layout);
         TextView wakeText = (TextView) findViewById(R.id.wake_text);
