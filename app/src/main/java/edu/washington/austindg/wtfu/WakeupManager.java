@@ -1,17 +1,12 @@
 package edu.washington.austindg.wtfu;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.washington.austindg.wtfu.revenge.ChangeWallpaperRevenge;
-import edu.washington.austindg.wtfu.revenge.EditContactRevenge;
-import edu.washington.austindg.wtfu.revenge.HeyyyRevenge;
-import edu.washington.austindg.wtfu.revenge.TextRevenge;
 import edu.washington.austindg.wtfu.wakeup.AdventureActivity;
 import edu.washington.austindg.wtfu.wakeup.ImALittleFatGirlActivity;
 import edu.washington.austindg.wtfu.wakeup.WatchAdActivity;

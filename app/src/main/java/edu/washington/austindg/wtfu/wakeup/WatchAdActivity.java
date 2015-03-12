@@ -1,8 +1,6 @@
 package edu.washington.austindg.wtfu.wakeup;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.view.View;
@@ -16,7 +14,6 @@ import com.google.android.gms.ads.InterstitialAd;
 
 import edu.washington.austindg.wtfu.DeviceControl;
 import edu.washington.austindg.wtfu.R;
-import edu.washington.austindg.wtfu.WakeTheFuckUpActivity;
 import edu.washington.austindg.wtfu.WakeupActivity;
 
 public class WatchAdActivity extends WakeupActivity {
@@ -73,16 +70,5 @@ public class WatchAdActivity extends WakeupActivity {
         };
         yesBtn.setOnClickListener(btnListener);
         noBtn.setOnClickListener(btnListener);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if(views < 5) {
-            finish();
-        } else {
-            DeviceControl.stopAlarmAudio();
-            done();
-        }
     }
 }

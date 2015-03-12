@@ -19,7 +19,7 @@
             android:text="8:30"
             android:id="@+id/time"
             android:textSize="45dp"
-            android:textColor="#ffffff" />
+            android:textColor="@color/dark_gray" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,7 +27,7 @@
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="AM"
             android:id="@+id/am_pm"
-            android:textColor="#ffffff" />
+            android:textColor="@color/dark_gray" />
         <View android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
@@ -63,7 +63,7 @@
             android:id="@+id/days_of_week"
             android:textSize="16dp"
             android:textIsSelectable="true"
-            android:textColor="#ffffff" />
+            android:textColor="@color/light_gray" />
 
         <View android:layout_width="0dp"
             android:layout_height="match_parent"

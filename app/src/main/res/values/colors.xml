@@ -1,4 +1,6 @@
 <resources>
-    <color name="black_overlay">#66000000</color>
-    <color name="red">#679aef</color>
+    <color name="dark_gray">#333333</color>
+    <color name="light_gray">#808080</color>
+    <color name="dark_blueish_gray">#556270</color>
+    <color name="blueish_gray">#4E6D8A</color>
 </resources>
