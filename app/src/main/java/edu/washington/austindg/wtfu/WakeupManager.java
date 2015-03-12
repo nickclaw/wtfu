@@ -13,6 +13,7 @@ import edu.washington.austindg.wtfu.revenge.EditContactRevenge;
 import edu.washington.austindg.wtfu.revenge.HeyyyRevenge;
 import edu.washington.austindg.wtfu.revenge.TextRevenge;
 import edu.washington.austindg.wtfu.wakeup.AdventureActivity;
+import edu.washington.austindg.wtfu.wakeup.ImALittleFatGirlActivity;
 
 /**
  * Created by nickclaw on 3/11/15.
@@ -31,6 +32,7 @@ public class WakeupManager {
     public WakeupManager() {
         this.activities = new ArrayList<Class>(){{
            add(AdventureActivity.class);
+           add(ImALittleFatGirlActivity.class);
         }};
     }
 
