@@ -11,15 +11,21 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
+import java.util.ArrayList;
+
+import edu.washington.austindg.wtfu.DeviceControl;
 import edu.washington.austindg.wtfu.R;
 
-public class ImALittleFatGirlActivity extends Activity implements RecognitionListener {
+public class ImALittleFatGirlActivity extends Activity implements RecognitionListener, View.OnClickListener {
 
     private static final String TAG = "ImALittleFatGirl";
 
     private SpeechRecognizer sr;
-    private View sayItView;
+    private boolean isListening = false;
+    private Button btn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +36,26 @@ public class ImALittleFatGirlActivity extends Activity implements RecognitionLis
         sr = SpeechRecognizer.createSpeechRecognizer(this);
         sr.setRecognitionListener(this);
 
+        DeviceControl.pauseAlarmAudio();
+
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         sr.startListening(intent);
+        isListening = true;
 
-        sayItView = (View) findViewById(R.id.textView);
+        btn = (Button) findViewById(R.id.tryAgainButton);
+        btn.setEnabled(false);
+        btn.setOnClickListener(this);
+    }
+
+    // click listener
+    public void onClick(View v) {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        DeviceControl.pauseAlarmAudio();
+        sr.startListening(intent);
+        isListening = true;
+        btn.setEnabled(false);
     }
 
     //
@@ -44,7 +65,6 @@ public class ImALittleFatGirlActivity extends Activity implements RecognitionLis
     @Override
     public void onReadyForSpeech(Bundle bundle) {
         Log.i(TAG, "onReadyForSpeech");
-        sayItView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -55,6 +75,24 @@ public class ImALittleFatGirlActivity extends Activity implements RecognitionLis
     @Override
     public void onResults(Bundle bundle) {
         Log.i(TAG, "onResults");
+        if (isListening) {
+            isListening = false;
+            btn.setEnabled(true);
+
+            ArrayList<String> results = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+            for(String s : results) {
+                Log.i(TAG, "Result: " + s);
+                if (s.contains("fat") && s.contains("little") && s.contains("girl")) {
+                    Log.i(TAG, "Worked!");
+                    DeviceControl.stopAlarmAudio();
+                    finish();
+                    sr.destroy();
+                    return;
+                }
+            }
+
+            DeviceControl.continueAlarmAudio();
+        }
     }
 
     @Override
@@ -75,6 +113,12 @@ public class ImALittleFatGirlActivity extends Activity implements RecognitionLis
     @Override
     public void onError(int code) {
         Log.i(TAG, "onError");
+        if (isListening) {
+            Toast.makeText(this, "Try again, fatty", Toast.LENGTH_SHORT).show();
+            isListening = false;
+            btn.setEnabled(true);
+            DeviceControl.continueAlarmAudio();
+        }
     }
 
     @Override
