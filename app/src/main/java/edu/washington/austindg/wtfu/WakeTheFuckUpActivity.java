@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import edu.washington.austindg.wtfu.wakeup.WatchAdActivity;
+
 
 public class WakeTheFuckUpActivity extends Activity {
 
@@ -54,11 +56,29 @@ public class WakeTheFuckUpActivity extends Activity {
         stopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // launch wakeup from here with the alarm that started this
-                // stop alarm there with AlarmScheduler methods
-
+                startWakeupActivity();
             }
         });
+    }
+
+    // start a random wakeup activity here
+    public void startWakeupActivity() {
+        // pick the random wakeup activity here!
+        // return a result and relaunch if bad result? (may need param to indicate last activity)
+        Intent wakeupAdIntent = new Intent(WakeTheFuckUpActivity.this, WatchAdActivity.class);
+        startActivityForResult(wakeupAdIntent, 1);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                finish();
+            }
+            if (resultCode == RESULT_CANCELED) {
+                startWakeupActivity();
+            }
+        }
     }
 
     public void startSeizureLoop() {

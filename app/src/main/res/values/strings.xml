@@ -18,4 +18,7 @@
     <string name="title_activity_wake_the_fuck_up">WakeTheFuckUpActivity</string>
     <string name="title_activity_adventure">AdventureActivity</string>
 
+    <!-- Ads -->
+    <string name="banner_ad_unit_id">ca-app-pub-3940256099942544/6300978111</string>
+    <string name="title_activity_watch_ad">WatchAdActivity</string>
 </resources>
