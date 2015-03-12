@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.util.List;
+
 import edu.washington.austindg.wtfu.wakeup.AdventureActivity;
 
 public class AlarmListActivity extends ActionBarActivity {
@@ -19,6 +21,7 @@ public class AlarmListActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_alarm_list);
         alarmRepository = App.getAlarmRepository();
     }
@@ -58,8 +61,8 @@ public class AlarmListActivity extends ActionBarActivity {
             case R.id.action_settings:
                 Log.i("menu", "Settings selected.");
 //                RevengeManager.getInstance().revenge();
-                Intent i = new Intent(this, AdventureActivity.class);
-                startActivity(i, null);
+//                Intent i = new Intent(this, AdventureActivity.class);
+//                startActivity(i, null);
                 return true;
             case R.id.action_search:
                 // create new alarm
@@ -74,7 +77,8 @@ public class AlarmListActivity extends ActionBarActivity {
                 break;
             case R.id.action_clear:
                 // clear all alarms
-                // TODO stop pending intents
+                List<Alarm> alarms = alarmRepository.getAlarms();
+                App.getAlarmScheduler().stopAlarms(alarms);
                 alarmRepository.clearAlarms();
                 alarmAdapter.notifyDataSetChanged();
                 return true;

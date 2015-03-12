@@ -1,7 +1,5 @@
 package edu.washington.austindg.wtfu;
 
-import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeSupport;
 import java.io.Serializable;
 import java.util.Arrays;
 
@@ -42,7 +40,6 @@ public class Alarm implements Serializable {
     }
 
     public void setStartHours(int hours) {
-        handler.firePropertyChange("startHours", this.startHours, hours);
         this.startHours = hours;
     }
 
@@ -59,7 +56,6 @@ public class Alarm implements Serializable {
     }
 
     public void setAmPm(String amPm) {
-        handler.firePropertyChange("ampm", this.amPm, amPm);
         this.amPm = amPm;
     }
 
@@ -68,7 +64,6 @@ public class Alarm implements Serializable {
     }
 
     public void setDays(boolean[] days) {
-        handler.firePropertyChange("days", this.days, days);
         this.days = days;
     }
 
@@ -77,7 +72,6 @@ public class Alarm implements Serializable {
     }
 
     public void setEnabled(boolean enabled) {
-        handler.firePropertyChange("enabled", this.enabled, enabled);
         this.enabled = enabled;
     }
 
@@ -90,16 +84,5 @@ public class Alarm implements Serializable {
                 ", minutes: " + getStartMinutes() +
                 ", daysEnabled: " + Arrays.toString(getDays()) +
                 "}";
-    }
-
-    //
-    // Listenable implementation
-    //
-    private transient final PropertyChangeSupport handler = new PropertyChangeSupport(this);
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        handler.addPropertyChangeListener(listener);
-    }
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        handler.removePropertyChangeListener(listener);
     }
 }

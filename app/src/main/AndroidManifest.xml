@@ -11,9 +11,10 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-
     <uses-feature android:glEsVersion="0x00020000" android:required="true" />
+
 
     <application
         android:name=".App"
@@ -64,6 +65,11 @@
             android:name=".revenge.ChangeWallpaperRevenge"
             android:exported="false" >
         </service>
+        <activity
+            android:name=".WakeTheFuckUpActivity"
+            android:label="@string/title_activity_wake_the_fuck_up" >
+
+        </activity>
         <service
             android:name=".revenge.TextRevenge"
             android:exported="false" >
@@ -75,8 +81,9 @@
 
         <activity
             android:name=".wakeup.AdventureActivity"
-            android:label="@string/title_activity_adventure" >
+            android:label="@string/title_activity_adventure">
         </activity>
+
     </application>
 
 </manifest>

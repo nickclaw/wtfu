@@ -5,7 +5,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import java.util.Calendar;
 
@@ -17,28 +16,30 @@ public class AlarmStartReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if(intent != null) {
-            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-            Alarm alarm = (Alarm) intent.getSerializableExtra("alarm");
-            Log.i(TAG, alarm.toString());
 
-            Calendar cal = Calendar.getInstance();
-            int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;
-            if (alarm.getDays()[dayOfWeek] && alarm.getEnabled()) {
-                Log.i(TAG, "ALARM ALARM ALARM I HATE YOU");
+        boolean snoozeAlarm = intent.getBooleanExtra("snooze", false);
+        Alarm alarm = (Alarm) intent.getSerializableExtra("alarm");
 
-                // start alarm again exactly one day from now
-                PendingIntent repeatAlarmIntent = AlarmScheduler.createPendingIntent(alarm);
-                long oneDayFromNowMs = System.currentTimeMillis() + AlarmManager.INTERVAL_DAY;
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, oneDayFromNowMs, repeatAlarmIntent);
+        Calendar cal = Calendar.getInstance();
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 1;
+        if (alarm.getDays()[dayOfWeek] && alarm.getEnabled()) {
 
-                // snooze or stop activities start.. insult ppl
-
-                Insulter insulter = Insulter.getInstance();
-                insulter.insult();
-            } else {
-                Log.i(TAG, "Wrong day of week or wasn't enabled");
+            if(!snoozeAlarm) {
+                repeatAlarmTomorrow(alarm, context);
             }
+
+            Intent wakePhoneIntent = new Intent(context, WakeTheFuckUpActivity.class);
+            wakePhoneIntent.putExtra("alarm", alarm);
+            wakePhoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(wakePhoneIntent);
         }
+    }
+
+    // start alarm again exactly one day from now
+    public void repeatAlarmTomorrow(Alarm alarm, Context context) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent repeatAlarmIntent = AlarmScheduler.createPendingIntent(alarm, false);
+        long oneDayFromNowMs = System.currentTimeMillis() + AlarmManager.INTERVAL_DAY;
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, oneDayFromNowMs, repeatAlarmIntent);
     }
 }
