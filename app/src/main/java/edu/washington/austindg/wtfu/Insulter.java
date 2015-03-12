@@ -82,12 +82,11 @@ public class Insulter implements TextToSpeech.OnInitListener {
     public void insult() {
         switch((int) (Math.random() * 3)) {
             case 0:
-                break;
             case 1:
-                toast(getInsult());
+                say(getInsult());
                 break;
             case 2:
-                say(getInsult());
+                toast(getInsult());
                 break;
         }
     }
