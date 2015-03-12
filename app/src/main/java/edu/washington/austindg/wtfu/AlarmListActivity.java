@@ -11,6 +11,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import edu.washington.austindg.wtfu.wakeup.AdventureActivity;
+import edu.washington.austindg.wtfu.wakeup.ImALittleFatGirlActivity;
 
 public class AlarmListActivity extends ActionBarActivity {
 
@@ -61,8 +62,8 @@ public class AlarmListActivity extends ActionBarActivity {
             case R.id.action_settings:
                 Log.i("menu", "Settings selected.");
 //                RevengeManager.getInstance().revenge();
-//                Intent i = new Intent(this, AdventureActivity.class);
-//                startActivity(i, null);
+                  Intent i = new Intent(this, ImALittleFatGirlActivity.class);
+                  startActivity(i, null);
                 return true;
             case R.id.action_search:
                 // create new alarm

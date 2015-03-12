@@ -17,5 +17,8 @@
     <string name="wake_the_fuck_up">Wake The Fuck Up</string>
     <string name="title_activity_wake_the_fuck_up">WakeTheFuckUpActivity</string>
     <string name="title_activity_adventure">AdventureActivity</string>
+    <string name="title_activity_im_alittle_fat_girl">ImALittleFatGirlActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>
