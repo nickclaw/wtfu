@@ -36,7 +36,10 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.Random;
 
+import edu.washington.austindg.wtfu.DeviceControl;
 import edu.washington.austindg.wtfu.R;
+import edu.washington.austindg.wtfu.RevengeManager;
+import edu.washington.austindg.wtfu.WakeupManager;
 
 public class AdventureActivity extends Activity
         implements GoogleApiClient.ConnectionCallbacks,
@@ -70,10 +73,16 @@ public class AdventureActivity extends Activity
 
     public void onConnectionSuspended(int code) {
         Log.i(TAG, "Connection suspended: " + code);
+        // act of revenge instead
+        RevengeManager.getInstance().revenge();
+        finish();
     }
 
     public void onConnectionFailed(ConnectionResult result) {
         Log.i(TAG, "Connection failed: " + result.getErrorCode());
+        // act of revenge instead
+        RevengeManager.getInstance().revenge();
+        finish();
     }
 
     public void onConnected(Bundle bundle) {
@@ -88,6 +97,7 @@ public class AdventureActivity extends Activity
     public void onLocationChanged(Location loc) {
         Log.i(TAG, "Loc: " + loc.toString());
 
+        // case: first location
         if (startingLoc == null) {
             Log.i(TAG, "First location!");
             startingLoc = loc;
@@ -108,13 +118,16 @@ public class AdventureActivity extends Activity
                 .fillColor(Color.GREEN)
                 .strokeColor(Color.BLACK)
                 .radius(100.0);
-
             map.addCircle(circleOptions);
+
+        // case: moving towards destLoc
         } else {
+
+            // stop alarm if close enough
             Log.i(TAG, "Loc: " + loc.toString() + ", " + loc.distanceTo(destLoc) + "m to go");
             if (loc.distanceTo(destLoc) < 100.0f) {
                 Log.i(TAG, "Reached destination");
-                // TODO turn off alarm
+                DeviceControl.stopAlarmAudio();
                 finish();
             }
         }

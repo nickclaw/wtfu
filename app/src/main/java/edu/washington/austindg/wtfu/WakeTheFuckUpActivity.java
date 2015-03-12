@@ -44,7 +44,8 @@ public class WakeTheFuckUpActivity extends Activity {
                 // Random rand = new Random();
                 // int snoozeMins = rand.nextInt(5) + 1; // 0-5 mins
                 // App.getAlarmScheduler().startSnoozeForAlarm(alarm, snoozeMins);
-                DeviceControl.stopAlarmAudio(WakeTheFuckUpActivity.this);
+                RevengeManager.getInstance().revenge();
+                DeviceControl.stopAlarmAudio();
                 App.getAlarmScheduler().startSnoozeForAlarm(alarm, 1);
                 finish();
             }
@@ -56,6 +57,7 @@ public class WakeTheFuckUpActivity extends Activity {
             public void onClick(View v) {
                 // launch wakeup from here with the alarm that started this
                 // stop alarm there with AlarmScheduler methods
+
 
             }
         });

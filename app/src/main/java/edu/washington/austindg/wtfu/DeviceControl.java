@@ -33,7 +33,19 @@ public class DeviceControl {
         mediaPlayer.start();
     }
 
-    public static void stopAlarmAudio(Activity activity) {
+    public static void pauseAlarmAudio() {
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+        }
+    }
+
+    public static void continueAlarmAudio() {
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
+        }
+    }
+
+    public static void stopAlarmAudio() {
         if(mediaPlayer != null) {
             mediaPlayer.stop();
         }
