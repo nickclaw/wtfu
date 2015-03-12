@@ -1,5 +1,6 @@
 package edu.washington.austindg.wtfu;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -33,12 +34,11 @@ public class WakeupManager {
         }};
     }
 
-    public void wakeup() {
+    public void wakeup(Activity context) {
         Log.i("RevengeManager", "Launching revenge");
         if (activities.size() == 0) return;
         Class service = activities.get( (int) (Math.random() * activities.size()) );
 
-        Context context = App.getContext();
         Intent intent = new Intent(context, service);
         context.startActivity(intent, null);
     }

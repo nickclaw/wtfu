@@ -55,10 +55,18 @@ public class AdventureActivity extends Activity
     private Location destLoc = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle state) {
         Log.i(TAG, "Starting..");
-        super.onCreate(savedInstanceState);
+        super.onCreate(state);
         setContentView(R.layout.activity_adventure);
+
+        if (state != null && state.containsKey("destLat")) {
+            Log.i(TAG, "Restoring state");
+            destLoc = new Location(LocationManager.GPS_PROVIDER);
+            destLoc.setLatitude(state.getDouble("destLat"));
+            destLoc.setLongitude(state.getDouble("destLong"));
+            Log.i(TAG, "Restored destLoc: " + destLoc.toString());
+        }
 
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         map.setMyLocationEnabled(true);
@@ -69,6 +77,16 @@ public class AdventureActivity extends Activity
                 .addOnConnectionFailedListener(this)
                 .build();
         googleApiClient.connect();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle state) {
+        super.onSaveInstanceState(state);
+        Log.i(TAG, "Saving state");
+        if (destLoc != null && state != null) {
+            state.putDouble("destLat", destLoc.getLatitude());
+            state.putDouble("destLong", destLoc.getLongitude());
+        }
     }
 
     public void onConnectionSuspended(int code) {
@@ -101,7 +119,10 @@ public class AdventureActivity extends Activity
         if (startingLoc == null) {
             Log.i(TAG, "First location!");
             startingLoc = loc;
-            destLoc = getNearbyLatLng(loc);
+
+            if (destLoc == null) {
+                destLoc = getNearbyLatLng(loc);
+            }
 
             // animate camera to location
             CameraPosition pos = CameraPosition.builder()

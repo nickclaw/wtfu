@@ -13,8 +13,8 @@
     <uses-permission android:name="android.permission.SET_WALLPAPER" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SEND_SMS" />
-    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
 
+    <uses-feature android:glEsVersion="0x00020000" android:required="true" />
 
     <application
         android:name=".App"
@@ -68,7 +68,6 @@
         <activity
             android:name=".WakeTheFuckUpActivity"
             android:label="@string/title_activity_wake_the_fuck_up" >
-
         </activity>
         <service
             android:name=".revenge.TextRevenge"
@@ -88,7 +87,6 @@
         <activity android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
-
     </application>
 
 </manifest>

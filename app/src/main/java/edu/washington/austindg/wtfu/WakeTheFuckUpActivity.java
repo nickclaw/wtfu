@@ -57,8 +57,9 @@ public class WakeTheFuckUpActivity extends Activity {
             public void onClick(View v) {
                 // launch wakeup from here with the alarm that started this
                 // stop alarm there with AlarmScheduler methods
-
-
+                WakeupManager.getInstance().wakeup(WakeTheFuckUpActivity.this);
+                // WakeupActivity in charge of turning off alarm
+                finish();
             }
         });
     }
