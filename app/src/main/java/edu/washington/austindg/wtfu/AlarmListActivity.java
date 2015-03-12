@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.washington.austindg.wtfu.wakeup.AdventureActivity;
@@ -83,6 +84,12 @@ public class AlarmListActivity extends ActionBarActivity {
                 alarmRepository.clearAlarms();
                 alarmAdapter.notifyDataSetChanged();
                 return true;
+            case R.id.action_alarm:
+                Intent wakePhoneIntent = new Intent(this, WakeTheFuckUpActivity.class);
+                WakeupManager.getInstance().put(WakeTheFuckUpActivity.class);
+                wakePhoneIntent.putExtra("alarm", new Alarm());
+                wakePhoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                this.startActivity(wakePhoneIntent);
         }
 
         return super.onOptionsItemSelected(item);
