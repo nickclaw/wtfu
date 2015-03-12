@@ -14,6 +14,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -73,8 +74,8 @@
         <activity
             android:name=".WakeTheFuckUpActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_wake_the_fuck_up"
             android:screenOrientation="portrait" >
+            android:label="@string/title_activity_wake_the_fuck_up" >
         </activity>
 
         <service
@@ -89,8 +90,8 @@
         <activity
             android:name=".wakeup.AdventureActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/title_activity_adventure"
             android:screenOrientation="portrait" >
+            android:label="@string/title_activity_adventure" >
         </activity>
 
         <!-- Admob Ads Activity -->
@@ -98,12 +99,16 @@
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
+
         <activity
-            android:name=".wakeup.ImALittleFatGirlActivity"
+            android:name=".wakeup.WatchAdActivity"
+            android:label="@string/title_activity_watch_ad" >
+        </activity>
+
+        <activity android:name=".wakeup.ImALittleFatGirlActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/title_activity_im_alittle_fat_girl"
-            android:screenOrientation="portrait" >
-        </activity>
+            android:screenOrientation="portrait" ></activity>
     </application>
 
 </manifest>

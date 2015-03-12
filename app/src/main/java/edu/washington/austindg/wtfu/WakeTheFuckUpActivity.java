@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import edu.washington.austindg.wtfu.wakeup.WatchAdActivity;
+
 
 public class WakeTheFuckUpActivity extends WakeupActivity {
 
@@ -62,6 +64,18 @@ public class WakeTheFuckUpActivity extends WakeupActivity {
                 done();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1) {
+            if(resultCode == RESULT_OK){
+                finish();
+            }
+            if (resultCode == RESULT_CANCELED) {
+                startWakeupActivity();
+            }
+        }
     }
 
     public void startSeizureLoop() {
