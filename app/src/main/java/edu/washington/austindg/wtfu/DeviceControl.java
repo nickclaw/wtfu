@@ -7,6 +7,9 @@ import android.media.MediaPlayer;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.lang.reflect.Field;
+import java.util.Random;
+
 /**
  * Created by austindg on 3/11/15.
  */
@@ -29,9 +32,12 @@ public class DeviceControl {
     public static void playAlarmAudio(Activity activity) {
         // will write code to grab random audio clip in a bit
         if (mediaPlayer == null) {
-            mediaPlayer = MediaPlayer.create(activity, R.raw.annoying);
-            mediaPlayer.setLooping(true);
-            mediaPlayer.start();
+            int clipId = getRandomSoundClipResourceId();
+            if(clipId != -1) {
+                mediaPlayer = MediaPlayer.create(activity, clipId);
+                mediaPlayer.setLooping(true);
+                mediaPlayer.start();
+            }
         }
     }
 
@@ -52,6 +58,19 @@ public class DeviceControl {
             mediaPlayer.stop();
             mediaPlayer = null;
         }
+    }
+
+    public static int getRandomSoundClipResourceId() {
+        int resourceId = -1;
+        Random r  = new Random();
+        Field[] fields = R.raw.class.getFields();
+        resourceId = r.nextInt(fields.length);
+        try {
+            resourceId = fields[resourceId].getInt(fields[resourceId]);
+        } catch(Exception e)  {
+            e.printStackTrace();
+        }
+        return resourceId;
     }
 
 }
