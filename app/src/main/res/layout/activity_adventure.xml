@@ -3,4 +3,12 @@
     android:id="@+id/map"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:name="com.google.android.gms.maps.MapFragment"/>
+    android:name="com.google.android.gms.maps.MapFragment" />
+
+    <!--android:mapType="normal"
+    android:uiZoomControls="false"
+    android:uiCompass="false"
+    android:uiZoomGestures="false"
+    android:uiScrollGestures="false"
+    android:uiRotateGestures="false"
+    android:uiTiltGestures="false"  /> -->
