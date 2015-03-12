@@ -3,6 +3,7 @@ package edu.washington.austindg.wtfu;
 import android.app.Activity;
 import android.content.Context;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -10,6 +11,8 @@ import android.view.WindowManager;
  * Created by austindg on 3/11/15.
  */
 public class DeviceControl {
+
+    private static MediaPlayer mediaPlayer;
 
     public static void wakeDevice(Activity activity) {
         Window window = activity.getWindow();
@@ -21,6 +24,19 @@ public class DeviceControl {
     public static void setDeviceMaxVolume(Activity activity) {
         AudioManager am = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
         am.setStreamVolume(AudioManager.STREAM_MUSIC, am.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+    }
+
+    public static void playAlarmAudio(Activity activity) {
+        // will write code to grab random audio clip in a bit
+        mediaPlayer = MediaPlayer.create(activity, R.raw.annoying);
+        mediaPlayer.setLooping(true);
+        mediaPlayer.start();
+    }
+
+    public static void stopAlarmAudio(Activity activity) {
+        if(mediaPlayer != null) {
+            mediaPlayer.stop();
+        }
     }
 
 }
