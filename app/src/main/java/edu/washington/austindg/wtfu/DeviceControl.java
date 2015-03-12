@@ -28,9 +28,11 @@ public class DeviceControl {
 
     public static void playAlarmAudio(Activity activity) {
         // will write code to grab random audio clip in a bit
-        mediaPlayer = MediaPlayer.create(activity, R.raw.annoying);
-        mediaPlayer.setLooping(true);
-        mediaPlayer.start();
+        if (mediaPlayer == null) {
+            mediaPlayer = MediaPlayer.create(activity, R.raw.annoying);
+            mediaPlayer.setLooping(true);
+            mediaPlayer.start();
+        }
     }
 
     public static void pauseAlarmAudio() {
@@ -48,6 +50,7 @@ public class DeviceControl {
     public static void stopAlarmAudio() {
         if(mediaPlayer != null) {
             mediaPlayer.stop();
+            mediaPlayer = null;
         }
     }
 

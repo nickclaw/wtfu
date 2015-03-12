@@ -29,6 +29,7 @@ public class AlarmStartReceiver extends BroadcastReceiver {
             }
 
             Intent wakePhoneIntent = new Intent(context, WakeTheFuckUpActivity.class);
+            WakeupManager.getInstance().put(WakeTheFuckUpActivity.class);
             wakePhoneIntent.putExtra("alarm", alarm);
             wakePhoneIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(wakePhoneIntent);

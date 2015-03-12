@@ -35,6 +35,7 @@ public class AlarmListActivity extends ActionBarActivity {
         ListView alarmView = (ListView) findViewById(R.id.alarmList);
         alarmAdapter = new AlarmAdapter(this, alarmRepository.deserialize());
         alarmView.setAdapter(alarmAdapter);
+        WakeupManager.getInstance().restore(this);
     }
 
     @Override

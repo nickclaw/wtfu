@@ -27,6 +27,8 @@ public class WakeupManager {
         return instance;
     }
 
+    private static final String TAG = "WakeupManager";
+    private Class current = null;
     private List<Class> activities;
 
     public WakeupManager() {
@@ -39,9 +41,28 @@ public class WakeupManager {
     public void wakeup(Activity context) {
         Log.i("RevengeManager", "Launching revenge");
         if (activities.size() == 0) return;
-        Class service = activities.get( (int) (Math.random() * activities.size()) );
+        Class activity = activities.get( (int) (Math.random() * activities.size()) );
 
-        Intent intent = new Intent(context, service);
+        current = activity;
+        Intent intent = new Intent(context, activity);
         context.startActivity(intent, null);
+    }
+
+    public void restore(Activity context) {
+        Log.i(TAG, "Trying to restore");
+        if (current != null) {
+            Intent intent = new Intent(context, current);
+            context.startActivity(intent, null);
+        }
+    }
+
+    public void put(Class c) {
+        current = c;
+    }
+
+    public void clear(Class c) {
+        if (c == current) {
+            current = null;
+        }
     }
 }

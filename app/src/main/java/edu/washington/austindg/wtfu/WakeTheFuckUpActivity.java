@@ -13,7 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 
-public class WakeTheFuckUpActivity extends Activity {
+public class WakeTheFuckUpActivity extends WakeupActivity {
 
     public static final int SEIZURE_DURATION_MS = 150;
 
@@ -47,7 +47,7 @@ public class WakeTheFuckUpActivity extends Activity {
                 RevengeManager.getInstance().revenge();
                 DeviceControl.stopAlarmAudio();
                 App.getAlarmScheduler().startSnoozeForAlarm(alarm, 1);
-                finish();
+                done();
             }
         });
 
@@ -59,7 +59,7 @@ public class WakeTheFuckUpActivity extends Activity {
                 // stop alarm there with AlarmScheduler methods
                 WakeupManager.getInstance().wakeup(WakeTheFuckUpActivity.this);
                 // WakeupActivity in charge of turning off alarm
-                finish();
+                done();
             }
         });
     }

@@ -20,5 +20,6 @@
     <string name="title_activity_im_alittle_fat_girl">ImALittleFatGirlActivity</string>
 
     <string name="hello_world">Hello world!</string>
+    <string name="title_activity_wakeup">WakeupActivity</string>
 
 </resources>

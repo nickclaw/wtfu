@@ -39,9 +39,10 @@ import java.util.Random;
 import edu.washington.austindg.wtfu.DeviceControl;
 import edu.washington.austindg.wtfu.R;
 import edu.washington.austindg.wtfu.RevengeManager;
+import edu.washington.austindg.wtfu.WakeupActivity;
 import edu.washington.austindg.wtfu.WakeupManager;
 
-public class AdventureActivity extends Activity
+public class AdventureActivity extends WakeupActivity
         implements GoogleApiClient.ConnectionCallbacks,
                    GoogleApiClient.OnConnectionFailedListener,
                    com.google.android.gms.location.LocationListener {
@@ -93,14 +94,14 @@ public class AdventureActivity extends Activity
         Log.i(TAG, "Connection suspended: " + code);
         // act of revenge instead
         RevengeManager.getInstance().revenge();
-        finish();
+        done();
     }
 
     public void onConnectionFailed(ConnectionResult result) {
         Log.i(TAG, "Connection failed: " + result.getErrorCode());
         // act of revenge instead
         RevengeManager.getInstance().revenge();
-        finish();
+        done();
     }
 
     public void onConnected(Bundle bundle) {
@@ -149,7 +150,7 @@ public class AdventureActivity extends Activity
             if (loc.distanceTo(destLoc) < 100.0f) {
                 Log.i(TAG, "Reached destination");
                 DeviceControl.stopAlarmAudio();
-                finish();
+                done();
             }
         }
     }

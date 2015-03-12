@@ -18,8 +18,9 @@ import java.util.ArrayList;
 
 import edu.washington.austindg.wtfu.DeviceControl;
 import edu.washington.austindg.wtfu.R;
+import edu.washington.austindg.wtfu.WakeupActivity;
 
-public class ImALittleFatGirlActivity extends Activity implements RecognitionListener, View.OnClickListener {
+public class ImALittleFatGirlActivity extends WakeupActivity implements RecognitionListener, View.OnClickListener {
 
     private static final String TAG = "ImALittleFatGirl";
 
@@ -85,7 +86,7 @@ public class ImALittleFatGirlActivity extends Activity implements RecognitionLis
                 if (s.contains("fat") && s.contains("little") && s.contains("girl")) {
                     Log.i(TAG, "Worked!");
                     DeviceControl.stopAlarmAudio();
-                    finish();
+                    done();
                     sr.destroy();
                     return;
                 }
