@@ -64,6 +64,9 @@ public class AlarmAdapter extends ArrayAdapter<Alarm> {
         final CheckBox cbFriday = (CheckBox) rowView.findViewById(R.id.cb_fri);
         final CheckBox cbSaturday = (CheckBox) rowView.findViewById(R.id.cb_sat);
 
+        //Set colors:
+        timeView.setBackgroundColor(R.color.white);
+
         // Set Views: rowView
         timeView.setText(makeDisplayHours(alarm.getStartHours()) + ":" + makeDisplayMinutes(alarm.getStartMinutes()));
         amPmView.setText(alarm.getAmPm());

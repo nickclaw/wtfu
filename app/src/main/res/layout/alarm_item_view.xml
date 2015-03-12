@@ -18,22 +18,25 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="8:30"
             android:id="@+id/time"
-            android:textSize="45dp" />
+            android:textSize="45dp"
+            android:textColor="#ffffff" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:text="AM"
-            android:id="@+id/am_pm" />
+            android:id="@+id/am_pm"
+            android:textColor="#ffffff" />
         <View android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1" />
         <Switch
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="54dp"
             android:id="@+id/enabled_switch"
-            android:checked="false" />
+            android:checked="false"
+            android:layout_weight="0.28" />
     </LinearLayout>
 
     <LinearLayout
@@ -59,7 +62,8 @@
             android:text="No Repeat"
             android:id="@+id/days_of_week"
             android:textSize="16dp"
-            android:textIsSelectable="true" />
+            android:textIsSelectable="true"
+            android:textColor="#ffffff" />
 
         <View android:layout_width="0dp"
             android:layout_height="match_parent"
